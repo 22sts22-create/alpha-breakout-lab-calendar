@@ -2,7 +2,7 @@
 Alpha Breakout Lab — PDUFA Bot
 ================================
 Scrapes SEC EDGAR and GlobeNewswire daily for new PDUFA date announcements.
-Updates pdufa_calendar.html automatically and sends a digest email.
+Updates pdufa_calendar.html automatically and sends a Pushover notification.
 
 Safe by design:
 - Never deletes existing entries
@@ -15,11 +15,8 @@ import os
 import re
 import json
 import logging
-import smtplib
 import requests
 from datetime import datetime, timedelta
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
 from bs4 import BeautifulSoup
 
 # ── Logging ──────────────────────────────────────────────────────────────────
@@ -31,9 +28,8 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 # ── Config (set via GitHub Secrets / environment variables) ──────────────────
-NOTIFY_EMAIL    = os.environ.get("NOTIFY_EMAIL", "")
-EMAIL_PASSWORD  = os.environ.get("EMAIL_PASSWORD", "")  # Gmail App Password
-SMTP_FROM       = os.environ.get("NOTIFY_EMAIL", "")
+PUSHOVER_USER_KEY  = os.environ.get("PUSHOVER_USER_KEY", "")
+PUSHOVER_API_TOKEN = os.environ.get("PUSHOVER_API_TOKEN", "")
 
 # ── Month color map for new entries ──────────────────────────────────────────
 MONTH_COLORS = {
@@ -377,71 +373,57 @@ def inject_new_entries(html_content, new_entries):
     return new_html, len(new_entries)
 
 
-def send_digest_email(findings, new_entries_count, errors):
-    """Send daily digest email with results."""
-    if not NOTIFY_EMAIL or not EMAIL_PASSWORD:
-        log.warning("Email credentials not configured — skipping email")
+def send_pushover_notification(findings, new_entries_count, errors):
+    """Send Pushover push notification with daily digest."""
+    if not PUSHOVER_USER_KEY or not PUSHOVER_API_TOKEN:
+        log.warning("Pushover credentials not configured — skipping notification")
         return
 
-    today = datetime.now().strftime("%B %d, %Y")
+    today = datetime.now().strftime("%b %d, %Y")
 
-    subject = f"🔬 Alpha Breakout Lab PDUFA Bot — {today} Digest"
-
+    # ── Build message ─────────────────────────────────────────────────────────
     if new_entries_count > 0:
-        subject = f"🚀 {new_entries_count} NEW PDUFA Date(s) Found! — {today}"
-
-    body = f"""
-<html><body style="font-family: Arial, sans-serif; background: #0F1420; color: #E2E8F0; padding: 24px;">
-
-<h1 style="color: #7C3AED; font-size: 24px;">Alpha Breakout Lab</h1>
-<h2 style="color: #06B6D4;">PDUFA Bot Daily Digest — {today}</h2>
-
-<div style="background: #161C2E; border: 1px solid #1E2640; border-radius: 8px; padding: 20px; margin: 16px 0;">
-  <h3 style="color: #10B981;">📊 Summary</h3>
-  <p>SEC EDGAR filings scanned: <strong>{len([f for f in findings if f.get('source') == 'SEC EDGAR 8-K'])}</strong></p>
-  <p>GlobeNewswire items scanned: <strong>{len([f for f in findings if f.get('source') == 'GlobeNewswire'])}</strong></p>
-  <p>New entries added to calendar: <strong style="color: {'#10B981' if new_entries_count > 0 else '#64748B'};">{new_entries_count}</strong></p>
-  <p>Errors encountered: <strong style="color: {'#EF4444' if errors else '#10B981'};">{len(errors)}</strong></p>
-</div>
-
-{"".join([f'''
-<div style="background: #161C2E; border: 1px solid #7C3AED; border-radius: 8px; padding: 16px; margin: 12px 0;">
-  <h4 style="color: #7C3AED; margin: 0 0 8px;">🆕 NEW: {f.get('ticker', 'TBD')} — {f.get('entity', 'Unknown')[:60]}</h4>
-  <p style="color: #94A3B8; font-size: 13px;">PDUFA Date: <strong style="color: #06B6D4;">{f.get('pdufa_date', 'TBD')}</strong></p>
-  <p style="color: #94A3B8; font-size: 12px;">Source: {f.get('source', 'Unknown')}</p>
-  {"<p style='color: #94A3B8; font-size: 12px;'>Link: <a href='" + f.get('link','') + "' style='color: #7C3AED;'>View filing</a></p>" if f.get('link') else ''}
-  <p style="color: #64748B; font-size: 11px; font-style: italic;">⚠️ Auto-detected — please verify details before publishing</p>
-</div>
-''' for f in findings if f.get('added')]) if new_entries_count > 0 else '<p style="color: #64748B;">No new PDUFA dates detected today.</p>'}
-
-{"".join([f'<p style="color: #EF4444; font-size: 12px;">⚠️ Error: {e}</p>' for e in errors]) if errors else ''}
-
-<div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid #1E2640;">
-  <p style="color: #64748B; font-size: 11px;">
-    This is an automated message from Alpha Breakout Lab PDUFA Bot.<br>
-    All auto-detected entries should be manually verified before relying on them for trading decisions.<br>
-    View your live calendar at <a href="https://alphabreakoutlab.com/pdufa_calendar.html" style="color: #7C3AED;">alphabreakoutlab.com/pdufa_calendar.html</a>
-  </p>
-</div>
-
-</body></html>
-"""
+        title = f"🚀 {new_entries_count} NEW PDUFA Date(s) Found!"
+        new_tickers = [f.get('ticker','?') for f in findings if f.get('added')]
+        message = f"<b>Alpha Breakout Lab PDUFA Bot</b> — {today}\n\n"
+        message += f"<b>New entries added:</b> {new_entries_count}\n"
+        message += f"<b>Tickers:</b> {', '.join(new_tickers)}\n\n"
+        for f in findings:
+            if f.get('added'):
+                message += f"• <b>{f.get('ticker','?')}</b> — {f.get('pdufa_date','TBD')} ({f.get('source','')})\n"
+        message += f"\n⚠️ Auto-detected — verify before trading!"
+        priority = 1  # High priority for new finds
+    else:
+        title = f"✅ PDUFA Bot — Daily Check Complete"
+        message = f"<b>Alpha Breakout Lab PDUFA Bot</b> — {today}\n\n"
+        message += f"No new PDUFA dates detected today.\n"
+        message += f"Sources checked: SEC EDGAR + GlobeNewswire\n"
+        message += f"Errors: {len(errors)}"
+        if errors:
+            message += f"\n\n⚠️ Errors:\n" + "\n".join(errors[:3])
+        priority = -1  # Low priority for routine check
 
     try:
-        msg = MIMEMultipart("alternative")
-        msg["Subject"] = subject
-        msg["From"] = SMTP_FROM
-        msg["To"] = NOTIFY_EMAIL
-        msg.attach(MIMEText(body, "html"))
-
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-            server.login(SMTP_FROM, EMAIL_PASSWORD)
-            server.sendmail(SMTP_FROM, NOTIFY_EMAIL, msg.as_string())
-
-        log.info(f"Digest email sent to {NOTIFY_EMAIL}")
+        resp = requests.post(
+            "https://api.pushover.net/1/messages.json",
+            data={
+                "token":   PUSHOVER_API_TOKEN,
+                "user":    PUSHOVER_USER_KEY,
+                "title":   title,
+                "message": message,
+                "html":    1,
+                "priority": priority,
+                "sound":   "cashregister" if new_entries_count > 0 else "none"
+            },
+            timeout=10
+        )
+        if resp.status_code == 200:
+            log.info("Pushover notification sent successfully!")
+        else:
+            log.error(f"Pushover failed: {resp.status_code} — {resp.text}")
 
     except Exception as e:
-        log.error(f"Failed to send email: {e}")
+        log.error(f"Pushover notification failed: {e}")
 
 
 def main():
@@ -506,8 +488,8 @@ def main():
     else:
         log.info("No new entries to add — calendar unchanged")
 
-    # ── Send digest email ─────────────────────────────────────────────────────
-    send_digest_email(all_findings, entries_added, errors)
+    # ── Send Pushover notification ────────────────────────────────────────────
+    send_pushover_notification(all_findings, entries_added, errors)
 
     # ── Summary ───────────────────────────────────────────────────────────────
     log.info("=" * 60)
@@ -518,3 +500,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

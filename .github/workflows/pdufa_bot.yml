@@ -1,0 +1,63 @@
+name: PDUFA Bot — Daily Calendar Update
+
+on:
+  # Run every day at 8:00 AM Eastern (12:00 UTC)
+  schedule:
+    - cron: '0 12 * * *'
+
+  # Allow manual trigger from GitHub Actions tab
+  workflow_dispatch:
+
+jobs:
+  update-calendar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # Allows bot to commit changes to repo
+
+    steps:
+      # ── Step 1: Check out the repo ──────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # ── Step 2: Set up Python ───────────────────────────────────────────────
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # ── Step 3: Install dependencies ────────────────────────────────────────
+      - name: Install dependencies
+        run: |
+          pip install requests beautifulsoup4 lxml
+
+      # ── Step 4: Run the PDUFA bot ───────────────────────────────────────────
+      - name: Run PDUFA Bot
+        env:
+          NOTIFY_EMAIL: ${{ secrets.NOTIFY_EMAIL }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        run: |
+          python pdufa_bot.py
+
+      # ── Step 5: Check if calendar was updated ───────────────────────────────
+      - name: Check for changes
+        id: check_changes
+        run: |
+          git diff --quiet pdufa_calendar.html || echo "changed=true" >> $GITHUB_OUTPUT
+
+      # ── Step 6: Commit and push if calendar changed ─────────────────────────
+      - name: Commit updated calendar
+        if: steps.check_changes.outputs.changed == 'true'
+        run: |
+          git config --local user.email "pdufa-bot@alphabreakoutlab.com"
+          git config --local user.name "Alpha Breakout Lab PDUFA Bot"
+          git add pdufa_calendar.html
+          git commit -m "🤖 Bot update: New PDUFA date(s) added — $(date +'%Y-%m-%d')"
+          git push
+
+      # ── Step 7: Log no changes ──────────────────────────────────────────────
+      - name: No changes detected
+        if: steps.check_changes.outputs.changed != 'true'
+        run: |
+          echo "✅ No new PDUFA dates found today. Calendar unchanged."

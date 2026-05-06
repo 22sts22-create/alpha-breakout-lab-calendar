@@ -168,7 +168,8 @@ section{padding:100px 5%;}
 .slogan-sub{font-family:'Rajdhani',sans-serif;font-size:16px;color:rgba(0,245,255,.6);margin-top:4px;}
 
 /* ── SOCIAL ── */
-.social-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:60px;}
+/* CHANGE 4: 3 columns centered instead of 4 */
+.social-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:60px;max-width:900px;margin-left:auto;margin-right:auto;}
 .social-card{background:rgba(0,12,35,.9);border:1px solid rgba(0,245,255,.15);
   border-radius:10px;padding:32px 24px;text-align:center;text-decoration:none;
   display:block;transition:all .3s;}
@@ -219,7 +220,7 @@ footer{background:rgba(0,5,18,.98);border-top:1px solid rgba(0,245,255,.1);
 @media(max-width:900px){
   .about-grid,.merch-grid{grid-template-columns:1fr;}
   .series-grid{grid-template-columns:1fr 1fr;}
-  .social-grid{grid-template-columns:1fr 1fr;}
+  .social-grid{grid-template-columns:1fr 1fr;max-width:100%;}
   .footer-top{grid-template-columns:1fr 1fr;}
   .nav-links{display:none;}
 }
@@ -326,8 +327,6 @@ footer{background:rgba(0,5,18,.98);border-top:1px solid rgba(0,245,255,.1);
   background:linear-gradient(90deg,var(--cyan),transparent);}
 .modal-top-bar.gold{background:linear-gradient(90deg,var(--gold),transparent);}
 .modal-top-bar.green{background:linear-gradient(90deg,var(--green),transparent);}
-
-/* tool inputs */
 .tool-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
 .tool-row.single{grid-template-columns:1fr;}
 .tool-field{display:flex;flex-direction:column;gap:6px;}
@@ -352,8 +351,6 @@ footer{background:rgba(0,5,18,.98);border-top:1px solid rgba(0,245,255,.1);
 .calc-btn.gold:hover{background:rgba(255,215,0,.28);}
 .calc-btn.green{background:rgba(0,255,136,.12);border:1.5px solid var(--green);color:var(--green);}
 .calc-btn.green:hover{background:rgba(0,255,136,.25);}
-
-/* results panel */
 .results-panel{margin-top:20px;background:rgba(0,5,18,.8);border-radius:8px;
   padding:20px;border:1px solid rgba(0,245,255,.1);display:none;}
 .results-panel.show{display:block;}
@@ -381,7 +378,7 @@ footer{background:rgba(0,5,18,.98);border-top:1px solid rgba(0,245,255,.1);
 .tip-box.green{border-left-color:var(--green);background:rgba(0,255,136,.04);}
 .tip-text{font-family:'Rajdhani',sans-serif;font-size:15px;color:rgba(255,255,255,.6);line-height:1.6;}
 
-/* ── SUBSCRIBE SECTION ──────────────────────────────────── */
+/* ── SUBSCRIBE SECTION ── */
 .subscribe-section{background:linear-gradient(135deg,rgba(0,10,30,.98),rgba(0,20,50,.95));}
 .sub-inner{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;}
 .sub-tag{font-family:'Orbitron',monospace;font-size:13px;font-weight:700;
@@ -396,7 +393,6 @@ footer{background:rgba(0,5,18,.98);border-top:1px solid rgba(0,245,255,.1);
 .sub-perk-icon{font-size:22px;flex-shrink:0;}
 .sub-perk-text{font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:600;
   color:rgba(255,255,255,.75);letter-spacing:1px;}
-
 .sub-card{background:rgba(0,8,25,.9);border:1px solid rgba(255,215,0,.25);
   border-radius:12px;overflow:hidden;position:relative;}
 .sub-card-top{height:4px;background:linear-gradient(90deg,var(--gold),var(--cyan),var(--gold));}
@@ -405,7 +401,6 @@ footer{background:rgba(0,5,18,.98);border-top:1px solid rgba(0,245,255,.1);
   color:var(--gold);letter-spacing:3px;margin-bottom:10px;}
 .sub-card-sub{font-family:'Rajdhani',sans-serif;font-size:17px;color:rgba(255,255,255,.5);
   line-height:1.6;margin-bottom:28px;}
-
 .sub-form{display:flex;flex-direction:column;gap:16px;}
 .sub-field{display:flex;flex-direction:column;gap:6px;}
 .sub-label{font-family:'Rajdhani',sans-serif;font-size:12px;letter-spacing:3px;
@@ -418,10 +413,8 @@ footer{background:rgba(0,5,18,.98);border-top:1px solid rgba(0,245,255,.1);
 .sub-btn{background:linear-gradient(135deg,rgba(255,215,0,.2),rgba(255,140,0,.15));
   border:1.5px solid var(--gold);border-radius:6px;padding:15px 24px;
   font-family:'Rajdhani',sans-serif;font-size:18px;font-weight:700;letter-spacing:2px;
-  color:var(--gold);text-transform:uppercase;cursor:pointer;transition:all .3s;
-  text-align:center;}
-.sub-btn:hover{background:rgba(255,215,0,.25);box-shadow:0 0 30px rgba(255,215,0,.2);
-  transform:translateY(-2px);}
+  color:var(--gold);text-transform:uppercase;cursor:pointer;transition:all .3s;text-align:center;}
+.sub-btn:hover{background:rgba(255,215,0,.25);box-shadow:0 0 30px rgba(255,215,0,.2);transform:translateY(-2px);}
 .sub-success{display:none;background:rgba(0,255,136,.08);border:1px solid rgba(0,255,136,.25);
   border-radius:6px;padding:14px 18px;font-family:'Rajdhani',sans-serif;font-size:17px;
   font-weight:700;color:var(--green);text-align:center;letter-spacing:1px;}
@@ -430,27 +423,19 @@ footer{background:rgba(0,5,18,.98);border-top:1px solid rgba(0,245,255,.1);
 .sub-count-dot{width:8px;height:8px;border-radius:50%;background:var(--green);
   box-shadow:0 0 8px var(--green);animation:blink 2s ease-in-out infinite;flex-shrink:0;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
-.sub-count-text{font-family:'Rajdhani',sans-serif;font-size:15px;
-  color:rgba(255,255,255,.35);letter-spacing:1px;}
+.sub-count-text{font-family:'Rajdhani',sans-serif;font-size:15px;color:rgba(255,255,255,.35);letter-spacing:1px;}
 .sub-slogan{font-family:'Rajdhani',sans-serif;font-size:16px;font-weight:700;
-  letter-spacing:2px;color:rgba(255,215,0,.5);text-align:center;margin-top:20px;
-  font-style:italic;}
+  letter-spacing:2px;color:rgba(255,215,0,.5);text-align:center;margin-top:20px;font-style:italic;}
 @media(max-width:900px){.sub-inner{grid-template-columns:1fr;gap:40px;}}
-/* ── ANNOUNCEMENT BANNER ────────────────────────────────── */
-.announce-bar{
-  position:fixed;top:0;left:0;right:0;z-index:200;
+
+/* ── ANNOUNCEMENT BANNER ── */
+.announce-bar{position:fixed;top:0;left:0;right:0;z-index:200;
   background:linear-gradient(90deg,#0a0020,#1a0040,#0a0020);
-  border-bottom:1px solid rgba(255,215,0,.3);
-  padding:0 5%;
-  display:flex;align-items:center;justify-content:space-between;
-  height:48px;
-  overflow:hidden;
-}
-.announce-bar::before{
-  content:'';position:absolute;inset:0;
+  border-bottom:1px solid rgba(255,215,0,.3);padding:0 5%;
+  display:flex;align-items:center;justify-content:space-between;height:48px;overflow:hidden;}
+.announce-bar::before{content:'';position:absolute;inset:0;
   background:linear-gradient(90deg,transparent 0%,rgba(255,215,0,.05) 50%,transparent 100%);
-  animation:shimmer 3s ease-in-out infinite;
-}
+  animation:shimmer 3s ease-in-out infinite;}
 @keyframes shimmer{0%,100%{opacity:0}50%{opacity:1}}
 .announce-left{display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
 .announce-dot{width:7px;height:7px;border-radius:50%;background:#FFD200;
@@ -460,36 +445,22 @@ footer{background:rgba(0,5,18,.98);border-top:1px solid rgba(0,245,255,.1);
 .announce-text strong{color:#FFD200;}
 .announce-center{display:flex;align-items:center;gap:20px;position:relative;z-index:1;}
 .announce-divider{width:1px;height:18px;background:rgba(255,215,0,.2);}
-.announce-pill{
-  background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);
-  border-radius:20px;padding:3px 12px;
-  font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;
-  letter-spacing:2px;color:#00FF88;white-space:nowrap;
-}
+.announce-pill{background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);
+  border-radius:20px;padding:3px 12px;font-family:'Rajdhani',sans-serif;font-size:13px;
+  font-weight:700;letter-spacing:2px;color:#00FF88;white-space:nowrap;}
 .announce-right{display:flex;align-items:center;gap:12px;position:relative;z-index:1;}
-.announce-cta{
-  background:linear-gradient(135deg,rgba(255,215,0,.2),rgba(255,140,0,.15));
-  border:1px solid rgba(255,215,0,.5);border-radius:4px;
-  padding:5px 16px;font-family:'Rajdhani',sans-serif;font-size:13px;
-  font-weight:700;letter-spacing:2px;color:#FFD200;text-transform:uppercase;
-  text-decoration:none;white-space:nowrap;transition:all .2s;cursor:pointer;
-}
+.announce-cta{background:linear-gradient(135deg,rgba(255,215,0,.2),rgba(255,140,0,.15));
+  border:1px solid rgba(255,215,0,.5);border-radius:4px;padding:5px 16px;
+  font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:2px;
+  color:#FFD200;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:all .2s;cursor:pointer;}
 .announce-cta:hover{background:rgba(255,215,0,.28);box-shadow:0 0 16px rgba(255,215,0,.2);}
 .announce-close{background:none;border:none;color:rgba(255,255,255,.3);
   font-size:18px;cursor:pointer;padding:4px 8px;transition:color .2s;line-height:1;}
 .announce-close:hover{color:rgba(255,255,255,.7);}
-/* Push nav and content down when banner is visible */
 body.banner-open nav{top:48px;}
 body.banner-open .hero{padding-top:128px;}
-@media(max-width:900px){
-  .announce-center{display:none;}
-  .announce-text{font-size:13px;}
-}
-@media(max-width:600px){
-  .announce-right .announce-cta{display:none;}
-  .announce-text{font-size:12px;letter-spacing:1px;}
-}
-
+@media(max-width:900px){.announce-center{display:none;}.announce-text{font-size:13px;}}
+@media(max-width:600px){.announce-right .announce-cta{display:none;}.announce-text{font-size:12px;letter-spacing:1px;}}
 </style>
 </head>
 <body>
@@ -506,9 +477,7 @@ body.banner-open .hero{padding-top:128px;}
     <div class="announce-divider"></div>
     <div class="announce-pill">🔔 Early Access Now Open</div>
     <div class="announce-divider"></div>
-    <div class="announce-text" style="color:rgba(255,255,255,.5);font-weight:400;">
-      Subscribe free · Be first in line
-    </div>
+    <div class="announce-text" style="color:rgba(255,255,255,.5);font-weight:400;">Subscribe free · Be first in line</div>
   </div>
   <div class="announce-right">
     <a href="#subscribe" class="announce-cta" onclick="closeBanner(false)">Get Early Access ›</a>
@@ -530,7 +499,6 @@ body.banner-open .hero{padding-top:128px;}
       <li><a href="#tools">Tools</a></li>
       <li><a href="#subscribe">Early Access</a></li>
       <li><a href="https://alphabreakoutlab.com/pdufa_calendar.html" target="_blank" style="color:#a78bfa;">📅 PDUFA</a></li>
-    
       <li><a href="#merch">Merch</a></li>
       <li><a href="#social">Social</a></li>
     </ul>
@@ -592,42 +560,36 @@ body.banner-open .hero{padding-top:128px;}
     <div class="section-title">Your Complete<br>Trading <span>Education</span></div>
     <div class="section-desc">From absolute beginner to confident trader — every lesson you need, completely free.</div>
     <div class="series-grid">
-      <!-- Zero to First Trade -->
       <a href="#" class="series-card">
         <div class="series-ep">Series 01 · Episodes 18-23</div>
         <div class="series-title">Zero to First Trade</div>
         <div class="series-desc">Open your account, learn your platform, paper trade, master emotions, and place your first real trade with confidence.</div>
         <span class="series-tag" style="background:rgba(0,255,136,.1);color:#00ff88;border:1px solid rgba(0,255,136,.3);">Start Here</span>
       </a>
-      <!-- Trading Basics -->
       <a href="#" class="series-card">
         <div class="series-ep">Series 02 · Episodes 01-05</div>
         <div class="series-title">Trading Fundamentals</div>
         <div class="series-desc">Swing trading, day trading, breakouts, candlestick charts, and risk management — the core skills every trader needs.</div>
         <span class="series-tag" style="background:rgba(0,245,255,.1);color:var(--cyan);border:1px solid rgba(0,245,255,.3);">Beginner</span>
       </a>
-      <!-- Technical Analysis -->
       <a href="#" class="series-card">
         <div class="series-ep">Series 03 · Episodes 06-10</div>
         <div class="series-title">Technical Analysis</div>
         <div class="series-desc">Support & resistance, moving averages, volume, RSI, and bull vs bear markets — read the market like a pro.</div>
         <span class="series-tag" style="background:rgba(255,165,0,.1);color:#f97316;border:1px solid rgba(255,165,0,.3);">Intermediate</span>
       </a>
-      <!-- Market Hours -->
       <a href="#" class="series-card">
         <div class="series-ep">Series 04 · Episodes 13-15</div>
         <div class="series-title">Market Hours Mastery</div>
         <div class="series-desc">Pre-market, regular session, and post-market — understand every window and when to trade each one.</div>
         <span class="series-tag" style="background:rgba(129,140,248,.1);color:#818cf8;border:1px solid rgba(129,140,248,.3);">Practical</span>
       </a>
-      <!-- Advanced -->
       <a href="#" class="series-card">
         <div class="series-ep">Series 05 · Episodes 16-17</div>
         <div class="series-title">Advanced Trading</div>
         <div class="series-desc">Day trading and scalping — the fastest, most intense trading strategies explained step by step.</div>
         <span class="series-tag" style="background:rgba(255,68,102,.1);color:var(--red);border:1px solid rgba(255,68,102,.3);">Advanced</span>
       </a>
-      <!-- Definitions -->
       <a href="#" class="series-card">
         <div class="series-ep">Series 06 · Growing Library</div>
         <div class="series-title">Trading Dictionary</div>
@@ -644,10 +606,7 @@ body.banner-open .hero{padding-top:128px;}
     <div class="section-tag">// Alpha Trading Tools</div>
     <div class="section-title">Tools That Give You<br>The <span>Edge</span></div>
     <div class="section-desc">Free tools built by traders, for traders. No subscriptions. No paywalls. Just alpha.</div>
-
     <div class="tools-grid">
-
-      <!-- FEATURED: AlphaDesk Bot -->
       <div class="tools-bot-row">
         <div>
           <div class="tool-badge cyan" style="margin-bottom:16px;">LIVE · FREE</div>
@@ -681,8 +640,6 @@ body.banner-open .hero{padding-top:128px;}
           </div>
         </div>
       </div>
-
-      <!-- Position Size Calculator -->
       <div class="tool-card gold">
         <div class="tool-icon">🧮</div>
         <div class="tool-badge gold">FREE TOOL</div>
@@ -696,8 +653,6 @@ body.banner-open .hero{padding-top:128px;}
         </ul>
         <a href="#" class="tool-btn gold" onclick="openTool('positionsizer');return false;">Open Calculator ›</a>
       </div>
-
-      <!-- Risk/Reward Calculator -->
       <div class="tool-card">
         <div class="tool-icon">⚖️</div>
         <div class="tool-badge cyan">FREE TOOL</div>
@@ -711,8 +666,6 @@ body.banner-open .hero{padding-top:128px;}
         </ul>
         <a href="#" class="tool-btn cyan" onclick="openTool('riskreward');return false;">Open Calculator ›</a>
       </div>
-
-      <!-- DCA Calculator -->
       <div class="tool-card" style="border-color:rgba(0,255,136,.2);background:rgba(0,255,136,.03);">
         <div class="tool-icon">📉</div>
         <div class="tool-badge" style="background:rgba(0,255,136,.15);color:#00ff88;border-color:rgba(0,255,136,.4);">FREE TOOL</div>
@@ -726,8 +679,6 @@ body.banner-open .hero{padding-top:128px;}
         </ul>
         <a href="#" class="tool-btn" style="background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.4);color:#00ff88;" onclick="openTool('dca');return false;">Open Calculator ›</a>
       </div>
-
-      <!-- Alpha Strategy Simulator — PREMIUM -->
       <div class="tool-card gold" style="border-color:rgba(255,215,0,.3);background:rgba(255,215,0,.04);">
         <div class="tool-icon">🔐</div>
         <div class="tool-badge gold">PREMIUM</div>
@@ -741,8 +692,6 @@ body.banner-open .hero{padding-top:128px;}
         </ul>
         <a href="#" class="tool-btn gold">Coming Soon — Get Notified ›</a>
       </div>
-
-      <!-- Stock Screener coming soon -->
       <div class="tool-card" style="border-color:rgba(255,255,255,.07);">
         <div class="tool-icon">🔍</div>
         <div class="tool-badge red">COMING SOON</div>
@@ -756,9 +705,6 @@ body.banner-open .hero{padding-top:128px;}
         </ul>
         <div class="tool-coming">⏳ In Development</div>
       </div>
-
-      
-      <!-- PDUFA Calendar Tool Card -->
       <div class="tool-card" style="border-color:rgba(124,58,237,.3);background:rgba(124,58,237,.04);">
         <div class="tool-icon">📅</div>
         <div class="tool-badge" style="background:rgba(124,58,237,.15);color:#a78bfa;border:1px solid rgba(124,58,237,.4);">LIVE · FREE</div>
@@ -772,7 +718,6 @@ body.banner-open .hero{padding-top:128px;}
         </ul>
         <a href="https://alphabreakoutlab.com/pdufa_calendar.html" target="_blank" class="tool-btn" style="background:rgba(124,58,237,.12);border:1.5px solid #7C3AED;color:#a78bfa;">View Calendar ›</a>
       </div>
-      <!-- Crypto Bot coming soon -->
       <div class="tool-card" style="border-color:rgba(255,255,255,.07);">
         <div class="tool-icon">🤖</div>
         <div class="tool-badge red">COMING SOON</div>
@@ -786,7 +731,6 @@ body.banner-open .hero{padding-top:128px;}
         </ul>
         <div class="tool-coming">⏳ In Development</div>
       </div>
-
     </div>
   </div>
 </section>
@@ -800,22 +744,10 @@ body.banner-open .hero{padding-top:128px;}
         <div class="sub-title">Be <span>First In Line</span><br>When It Goes Live</div>
         <div class="sub-desc">The Alpha Strategy Simulator is coming. Backtest any stock ticker with the exact same proprietary Alpha Strategy that took a paper account from $25,000 to $190,000 in 6 weeks. Subscribe now and get notified the moment it launches — free.</div>
         <div class="sub-perks">
-          <div class="sub-perk">
-            <div class="sub-perk-icon">🔔</div>
-            <div class="sub-perk-text">First notification when the simulator goes live</div>
-          </div>
-          <div class="sub-perk">
-            <div class="sub-perk-icon">🎯</div>
-            <div class="sub-perk-text">Early access to the Alpha Strategy settings launch price</div>
-          </div>
-          <div class="sub-perk">
-            <div class="sub-perk-icon">🤖</div>
-            <div class="sub-perk-text">Priority access when the trading bot opens to the public</div>
-          </div>
-          <div class="sub-perk">
-            <div class="sub-perk-icon">📊</div>
-            <div class="sub-perk-text">Weekly stock alerts and ABL trading insights — free forever</div>
-          </div>
+          <div class="sub-perk"><div class="sub-perk-icon">🔔</div><div class="sub-perk-text">First notification when the simulator goes live</div></div>
+          <div class="sub-perk"><div class="sub-perk-icon">🎯</div><div class="sub-perk-text">Early access to the Alpha Strategy settings launch price</div></div>
+          <div class="sub-perk"><div class="sub-perk-icon">🤖</div><div class="sub-perk-text">Priority access when the trading bot opens to the public</div></div>
+          <div class="sub-perk"><div class="sub-perk-icon">📊</div><div class="sub-perk-text">Weekly stock alerts and ABL trading insights — free forever</div></div>
         </div>
       </div>
       <div class="sub-right">
@@ -824,7 +756,6 @@ body.banner-open .hero{padding-top:128px;}
           <div class="sub-card-body">
             <div class="sub-card-title">Get Notified First</div>
             <div class="sub-card-sub">Join the Alpha Breakout Lab early access list. Free. No spam. Unsubscribe anytime.</div>
-            <!-- ConvertKit Form — replace action URL with your ConvertKit form action -->
             <form action="https://app.convertkit.com/forms/YOUR_FORM_ID/subscriptions" method="post" target="_blank" class="sub-form" onsubmit="handleSubSubmit(event)">
               <div class="sub-field">
                 <label class="sub-label">First Name</label>
@@ -834,12 +765,8 @@ body.banner-open .hero{padding-top:128px;}
                 <label class="sub-label">Email Address</label>
                 <input type="email" name="email_address" class="sub-input" placeholder="Enter your email address" required>
               </div>
-              <button type="submit" class="sub-btn">
-                <span class="sub-btn-text">🔔 Notify Me When It's Live</span>
-              </button>
-              <div class="sub-success" id="sub-success">
-                ✅ You're on the list!! We'll notify you the moment it launches!!
-              </div>
+              <button type="submit" class="sub-btn"><span class="sub-btn-text">🔔 Notify Me When It's Live</span></button>
+              <div class="sub-success" id="sub-success">✅ You're on the list!! We'll notify you the moment it launches!!</div>
             </form>
             <div class="sub-count">
               <div class="sub-count-dot"></div>
@@ -853,7 +780,7 @@ body.banner-open .hero{padding-top:128px;}
   </div>
 </section>
 
-<!-- MERCH -->
+<!-- MERCH — CHANGE 1: Price $21.99 | CHANGE 2: CTA panel | CHANGE 3: Merch items -->
 <section class="merch" id="merch">
   <div class="section-inner">
     <div class="section-tag">// Alpha Breakout Lab Store</div>
@@ -861,26 +788,27 @@ body.banner-open .hero{padding-top:128px;}
     <div class="section-desc">Premium trading-inspired merch. Every purchase supports our mission of free financial education worldwide.</div>
     <div class="merch-grid">
       <div class="about-card" style="text-align:center;">
-        <div class="merch-name">Signature Tee</div>
-        <div class="merch-slogan">"I'm an Alpha Trader"</div>
-        <div style="font-family:'Rajdhani',sans-serif;font-size:18px;color:rgba(255,255,255,.6);margin-bottom:20px;">Dark shirt · Neon cyan design · Premium quality</div>
-        <div class="merch-price">$29.99</div>
+        <div class="merch-name">Signature Collection</div>
+        <div style="font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:var(--cyan);margin-bottom:12px;">Shop the Alpha Breakout Lab Collection 🛒</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-size:18px;color:rgba(255,255,255,.6);margin-bottom:24px;">Premium quality · Trading inspired · Rep the movement</div>
+        <div class="merch-price">From $21.99</div>
         <a href="#" class="btn-primary" style="display:inline-block;font-size:16px;padding:12px 32px;">Shop Now</a>
       </div>
       <div class="slogans-list">
-        <div style="font-family:'Orbitron',monospace;font-size:14px;letter-spacing:4px;color:var(--gold);margin-bottom:16px;">MORE SLOGANS COMING SOON</div>
-        <div class="slogan-item"><div class="slogan-text">"Where Markets Break Free"</div><div class="slogan-sub">Classic Logo Tee</div></div>
-        <div class="slogan-item"><div class="slogan-text">"Buy the Breakout"</div><div class="slogan-sub">Trader Strategy Tee</div></div>
-        <div class="slogan-item"><div class="slogan-text">"Risk It to Get the Biscuit"</div><div class="slogan-sub">Funny Trader Tee</div></div>
-        <div class="slogan-item"><div class="slogan-text">"Stop Loss. Take Profits. Repeat."</div><div class="slogan-sub">Rule-Based Trading Tee</div></div>
-        <div class="slogan-item"><div class="slogan-text">"The Market Gives. The Market Takes."</div><div class="slogan-sub">Zen Trader Tee</div></div>
-        <div class="slogan-item"><div class="slogan-text">"I Trade So My Family Doesn't Have To"</div><div class="slogan-sub">Purpose-Driven Tee</div></div>
+        <div style="font-family:'Orbitron',monospace;font-size:14px;letter-spacing:4px;color:var(--gold);margin-bottom:16px;">AVAILABLE NOW</div>
+        <div class="slogan-item"><div class="slogan-text">👕 T-Shirts</div><div class="slogan-sub">Premium trading-inspired tees · Multiple designs</div></div>
+        <div class="slogan-item"><div class="slogan-text">🧥 Hoodies</div><div class="slogan-sub">Stay warm while you watch the market</div></div>
+        <div class="slogan-item"><div class="slogan-text">☕ Mugs</div><div class="slogan-sub">Start every trading day right</div></div>
+        <div class="slogan-item"><div class="slogan-text">🩳 Sweatshirts</div><div class="slogan-sub">Comfortable · Stylish · Alpha</div></div>
+        <div style="font-family:'Orbitron',monospace;font-size:14px;letter-spacing:4px;color:var(--cyan);margin-top:8px;margin-bottom:16px;">COMING SOON</div>
+        <div class="slogan-item" style="border-left-color:rgba(0,245,255,.3);opacity:.6;"><div class="slogan-text">🖥️ Digital Screen Savers</div><div class="slogan-sub">Trading-themed wallpapers for your setup</div></div>
+        <div class="slogan-item" style="border-left-color:rgba(0,245,255,.3);opacity:.6;"><div class="slogan-text">🏷️ Stickers</div><div class="slogan-sub">Rep ABL on your laptop · water bottle · anywhere</div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SOCIAL -->
+<!-- SOCIAL — CHANGE 4: Twitter/X removed, 3 cards centered -->
 <section id="social">
   <div class="section-inner">
     <div class="section-tag">// Find Us Everywhere</div>
@@ -904,12 +832,6 @@ body.banner-open .hero{padding-top:128px;}
         <div class="social-platform" style="color:#e1306c;">Instagram</div>
         <div class="social-handle">@AlphaBreakoutLab</div>
         <div class="social-desc">Reels · Stories · Charts · Community</div>
-      </a>
-      <a href="#" class="social-card" style="border-color:rgba(29,161,242,.3);">
-        <div class="social-icon">🐦</div>
-        <div class="social-platform" style="color:#1da1f2;">Twitter/X</div>
-        <div class="social-handle">@AlphaBreakoutLab</div>
-        <div class="social-desc">Market commentary · Trade ideas · Real-time updates</div>
       </a>
     </div>
   </div>
@@ -955,7 +877,6 @@ body.banner-open .hero{padding-top:128px;}
           <li><a href="#">YouTube</a></li>
           <li><a href="#">TikTok</a></li>
           <li><a href="#">Instagram</a></li>
-          <li><a href="#">Twitter/X</a></li>
           <li><a href="#">LinkedIn</a></li>
         </ul>
       </div>
@@ -964,8 +885,8 @@ body.banner-open .hero{padding-top:128px;}
         <ul class="footer-links">
           <li><a href="#">T-Shirts</a></li>
           <li><a href="#">Hoodies</a></li>
-          <li><a href="#">Hats</a></li>
-          <li><a href="#">Accessories</a></li>
+          <li><a href="#">Mugs</a></li>
+          <li><a href="#">Sweatshirts</a></li>
           <li><a href="#">New Arrivals</a></li>
         </ul>
       </div>
@@ -977,9 +898,7 @@ body.banner-open .hero{padding-top:128px;}
   </div>
 </footer>
 
-<!-- ══ TOOL MODALS ══════════════════════════════════════════════ -->
-
-<!-- Position Sizer Modal -->
+<!-- TOOL MODALS -->
 <div class="modal-overlay" id="modal-positionsizer">
   <div class="modal">
     <div class="modal-top-bar gold"></div>
@@ -994,10 +913,7 @@ body.banner-open .hero{padding-top:128px;}
       <div class="tool-row">
         <div class="tool-field">
           <div class="tool-label">Account Size ($)</div>
-          <div class="tool-input-prefix">
-            <span>$</span>
-            <input class="tool-input gold-input" id="ps-account" type="number" placeholder="10000" min="1">
-          </div>
+          <div class="tool-input-prefix"><span>$</span><input class="tool-input gold-input" id="ps-account" type="number" placeholder="10000" min="1"></div>
         </div>
         <div class="tool-field">
           <div class="tool-label">Risk Per Trade (%)</div>
@@ -1007,17 +923,11 @@ body.banner-open .hero{padding-top:128px;}
       <div class="tool-row">
         <div class="tool-field">
           <div class="tool-label">Entry Price ($)</div>
-          <div class="tool-input-prefix">
-            <span>$</span>
-            <input class="tool-input gold-input" id="ps-entry" type="number" placeholder="25.00" step="0.01" min="0.01">
-          </div>
+          <div class="tool-input-prefix"><span>$</span><input class="tool-input gold-input" id="ps-entry" type="number" placeholder="25.00" step="0.01" min="0.01"></div>
         </div>
         <div class="tool-field">
           <div class="tool-label">Stop Loss Price ($)</div>
-          <div class="tool-input-prefix">
-            <span>$</span>
-            <input class="tool-input gold-input" id="ps-stop" type="number" placeholder="23.50" step="0.01" min="0.01">
-          </div>
+          <div class="tool-input-prefix"><span>$</span><input class="tool-input gold-input" id="ps-stop" type="number" placeholder="23.50" step="0.01" min="0.01"></div>
         </div>
       </div>
       <button class="calc-btn gold" onclick="calcPositionSize()">CALCULATE POSITION SIZE</button>
@@ -1041,75 +951,62 @@ body.banner-open .hero{padding-top:128px;}
   </div>
 </div>
 
-<!-- DCA Calculator Modal -->
 <div class="modal-overlay" id="modal-dca" onclick="if(event.target===this)closeTool('dca')">
-  <div class="modal-box" style="max-width:680px;">
+  <div class="modal">
+    <div class="modal-top-bar" style="background:linear-gradient(90deg,#00ff88,transparent);"></div>
     <div class="modal-header">
-      <div class="modal-title">📉 DCA Calculator</div>
+      <div class="modal-title" style="color:#00ff88;">📉 DCA CALCULATOR</div>
       <button class="modal-close" onclick="closeTool('dca')">✕</button>
     </div>
-    <div class="tip-box" style="margin-bottom:20px;background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.25);">
-      <div style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;color:#00ff88;margin-bottom:4px;">// HOW TO USE</div>
-      <div style="font-family:'Rajdhani',sans-serif;font-size:16px;color:rgba(255,255,255,.6);">Add each buy below. Enter the price you paid and how many shares. The calculator tracks your average cost and total P&L in real time.</div>
-    </div>
-
-    <!-- Current Price Input -->
-    <div style="display:flex;gap:16px;margin-bottom:20px;align-items:flex-end;">
-      <div style="flex:1;">
-        <label class="tool-label">Current Stock Price ($)</label>
-        <input class="tool-input" id="dca-current" type="number" placeholder="6.62" step="0.01" min="0.01" oninput="calcDCA()">
+    <div class="modal-body">
+      <div class="tip-box" style="margin-bottom:20px;background:rgba(0,255,136,.06);border-color:rgba(0,255,136,.25);">
+        <div style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;color:#00ff88;margin-bottom:4px;">// HOW TO USE</div>
+        <div style="font-family:'Rajdhani',sans-serif;font-size:16px;color:rgba(255,255,255,.6);">Add each buy below. Enter the price you paid and how many shares. The calculator tracks your average cost and total P&L in real time.</div>
       </div>
-      <div style="flex:1;">
-        <label class="tool-label">Stock Ticker (optional)</label>
-        <input class="tool-input" id="dca-ticker" type="text" placeholder="UNCY" style="text-transform:uppercase;" oninput="calcDCA()">
+      <div style="display:flex;gap:16px;margin-bottom:20px;align-items:flex-end;">
+        <div style="flex:1;"><label class="tool-label">Current Stock Price ($)</label><input class="tool-input" id="dca-current" type="number" placeholder="6.62" step="0.01" min="0.01" oninput="calcDCA()"></div>
+        <div style="flex:1;"><label class="tool-label">Stock Ticker (optional)</label><input class="tool-input" id="dca-ticker" type="text" placeholder="UNCY" style="text-transform:uppercase;" oninput="calcDCA()"></div>
       </div>
-    </div>
-
-    <!-- Buy Entries -->
-    <div style="margin-bottom:16px;">
-      <div style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;color:#00ff88;margin-bottom:12px;">// YOUR BUYS</div>
-      <div id="dca-entries">
-        <!-- entries injected here -->
+      <div style="margin-bottom:16px;">
+        <div style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;color:#00ff88;margin-bottom:12px;">// YOUR BUYS</div>
+        <div id="dca-entries"></div>
+        <button onclick="addDCAEntry()" style="margin-top:10px;background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);color:#00ff88;padding:10px 22px;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;cursor:pointer;border-radius:4px;width:100%;">+ ADD BUY</button>
       </div>
-      <button onclick="addDCAEntry()" style="margin-top:10px;background:rgba(0,255,136,.1);border:1px solid rgba(0,255,136,.3);color:#00ff88;padding:10px 22px;font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;cursor:pointer;border-radius:4px;width:100%;">+ ADD BUY</button>
-    </div>
-
-    <!-- Results -->
-    <div class="results-panel" id="dca-results" style="display:none;border-color:rgba(0,255,136,.2);background:rgba(0,255,136,.04);">
-      <div class="results-grid">
-        <div class="result-box"><div class="result-label">Avg Cost / Share</div><div class="result-val" style="color:#00ff88;" id="dca-avgcost">—</div></div>
-        <div class="result-box"><div class="result-label">Total Shares</div><div class="result-val white" id="dca-totalshares">—</div></div>
-        <div class="result-box"><div class="result-label">Total Invested</div><div class="result-val white" id="dca-invested">—</div></div>
-        <div class="result-box"><div class="result-label">Current Value</div><div class="result-val" style="color:#00f5ff;" id="dca-value">—</div></div>
-        <div class="result-box"><div class="result-label">Profit / Loss $</div><div class="result-val" id="dca-pnl">—</div></div>
-        <div class="result-box"><div class="result-label">Profit / Loss %</div><div class="result-val" id="dca-pnlpct">—</div></div>
+      <div class="results-panel" id="dca-results" style="display:none;border-color:rgba(0,255,136,.2);background:rgba(0,255,136,.04);">
+        <div class="result-grid three">
+          <div class="result-box"><div class="result-label">Avg Cost / Share</div><div class="result-val" style="color:#00ff88;" id="dca-avgcost">—</div></div>
+          <div class="result-box"><div class="result-label">Total Shares</div><div class="result-val white" id="dca-totalshares">—</div></div>
+          <div class="result-box"><div class="result-label">Total Invested</div><div class="result-val white" id="dca-invested">—</div></div>
+        </div>
+        <div class="result-grid" style="margin-top:12px;">
+          <div class="result-box"><div class="result-label">Current Value</div><div class="result-val" style="color:#00f5ff;" id="dca-value">—</div></div>
+          <div class="result-box"><div class="result-label">Profit / Loss $</div><div class="result-val" id="dca-pnl">—</div></div>
+          <div class="result-box"><div class="result-label">Profit / Loss %</div><div class="result-val" id="dca-pnlpct">—</div></div>
+        </div>
+        <div id="dca-verdict" class="result-verdict" style="margin-top:12px;"></div>
       </div>
-      <div id="dca-verdict" class="result-verdict" style="margin-top:12px;"></div>
-    </div>
-
-    <!-- DCA Table -->
-    <div id="dca-table-wrap" style="display:none;margin-top:16px;">
-      <div style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;color:#00ff88;margin-bottom:10px;">// BUY LOG</div>
-      <div style="overflow-x:auto;">
-        <table id="dca-table" style="width:100%;border-collapse:collapse;font-family:'Rajdhani',sans-serif;font-size:15px;">
-          <thead>
-            <tr style="border-bottom:1px solid rgba(0,255,136,.2);">
-              <th style="text-align:left;padding:8px 10px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:rgba(0,255,136,.6);">BUY #</th>
-              <th style="text-align:right;padding:8px 10px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:rgba(0,255,136,.6);">PRICE</th>
-              <th style="text-align:right;padding:8px 10px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:rgba(0,255,136,.6);">SHARES</th>
-              <th style="text-align:right;padding:8px 10px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:rgba(0,255,136,.6);">INVESTED</th>
-              <th style="text-align:right;padding:8px 10px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:rgba(0,255,136,.6);">AVG COST</th>
-              <th style="text-align:right;padding:8px 10px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:rgba(0,255,136,.6);">TOTAL SHARES</th>
-            </tr>
-          </thead>
-          <tbody id="dca-tbody"></tbody>
-        </table>
+      <div id="dca-table-wrap" style="display:none;margin-top:16px;">
+        <div style="font-family:'Orbitron',monospace;font-size:11px;letter-spacing:3px;color:#00ff88;margin-bottom:10px;">// BUY LOG</div>
+        <div style="overflow-x:auto;">
+          <table id="dca-table" style="width:100%;border-collapse:collapse;font-family:'Rajdhani',sans-serif;font-size:15px;">
+            <thead>
+              <tr style="border-bottom:1px solid rgba(0,255,136,.2);">
+                <th style="text-align:left;padding:8px 10px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:rgba(0,255,136,.6);">BUY #</th>
+                <th style="text-align:right;padding:8px 10px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:rgba(0,255,136,.6);">PRICE</th>
+                <th style="text-align:right;padding:8px 10px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:rgba(0,255,136,.6);">SHARES</th>
+                <th style="text-align:right;padding:8px 10px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:rgba(0,255,136,.6);">INVESTED</th>
+                <th style="text-align:right;padding:8px 10px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:rgba(0,255,136,.6);">AVG COST</th>
+                <th style="text-align:right;padding:8px 10px;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;color:rgba(0,255,136,.6);">TOTAL SHARES</th>
+              </tr>
+            </thead>
+            <tbody id="dca-tbody"></tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Risk/Reward Modal -->
 <div class="modal-overlay" id="modal-riskreward">
   <div class="modal">
     <div class="modal-top-bar"></div>
@@ -1122,33 +1019,12 @@ body.banner-open .hero{padding-top:128px;}
         <div class="tip-text">A good trade has at least a <strong style="color:var(--cyan)">2:1 reward-to-risk ratio</strong>. That means for every $1 you risk, you should be targeting at least $2 in profit.</div>
       </div>
       <div class="tool-row">
-        <div class="tool-field">
-          <div class="tool-label">Entry Price ($)</div>
-          <div class="tool-input-prefix">
-            <span>$</span>
-            <input class="tool-input" id="rr-entry" type="number" placeholder="25.00" step="0.01" min="0.01">
-          </div>
-        </div>
-        <div class="tool-field">
-          <div class="tool-label">Stop Loss ($)</div>
-          <div class="tool-input-prefix">
-            <span>$</span>
-            <input class="tool-input" id="rr-stop" type="number" placeholder="23.00" step="0.01" min="0.01">
-          </div>
-        </div>
+        <div class="tool-field"><div class="tool-label">Entry Price ($)</div><div class="tool-input-prefix"><span>$</span><input class="tool-input" id="rr-entry" type="number" placeholder="25.00" step="0.01" min="0.01"></div></div>
+        <div class="tool-field"><div class="tool-label">Stop Loss ($)</div><div class="tool-input-prefix"><span>$</span><input class="tool-input" id="rr-stop" type="number" placeholder="23.00" step="0.01" min="0.01"></div></div>
       </div>
       <div class="tool-row">
-        <div class="tool-field">
-          <div class="tool-label">Profit Target ($)</div>
-          <div class="tool-input-prefix">
-            <span>$</span>
-            <input class="tool-input" id="rr-target" type="number" placeholder="31.00" step="0.01" min="0.01">
-          </div>
-        </div>
-        <div class="tool-field">
-          <div class="tool-label">Shares</div>
-          <input class="tool-input" id="rr-shares" type="number" placeholder="100" min="1">
-        </div>
+        <div class="tool-field"><div class="tool-label">Profit Target ($)</div><div class="tool-input-prefix"><span>$</span><input class="tool-input" id="rr-target" type="number" placeholder="31.00" step="0.01" min="0.01"></div></div>
+        <div class="tool-field"><div class="tool-label">Shares</div><input class="tool-input" id="rr-shares" type="number" placeholder="100" min="1"></div>
       </div>
       <button class="calc-btn cyan" onclick="calcRiskReward()">CALCULATE R:R RATIO</button>
       <div class="results-panel" id="rr-results">
@@ -1171,294 +1047,33 @@ body.banner-open .hero{padding-top:128px;}
   </div>
 </div>
 
-
 <script>
-// ── MODAL OPEN/CLOSE ──────────────────────────────────────────────────────────
-function openTool(id) {
-  document.getElementById('modal-'+id).classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeTool(id) {
-  document.getElementById('modal-'+id).classList.remove('open');
-  document.body.style.overflow = '';
-}
-// Close on overlay click
-document.querySelectorAll('.modal-overlay').forEach(el => {
-  el.addEventListener('click', e => { if (e.target === el) closeTool(el.id.replace('modal-','')); });
-});
-// Close on Escape
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(el => el.classList.remove('open'));
-});
+function openTool(id){document.getElementById('modal-'+id).classList.add('open');document.body.style.overflow='hidden';}
+function closeTool(id){document.getElementById('modal-'+id).classList.remove('open');document.body.style.overflow='';}
+document.querySelectorAll('.modal-overlay').forEach(el=>{el.addEventListener('click',e=>{if(e.target===el)closeTool(el.id.replace('modal-',''));});});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.modal-overlay.open').forEach(el=>el.classList.remove('open'));});
 
-// ── DCA CALCULATOR ────────────────────────────────────────────────────────────
-let dcaEntries = [];
+let dcaEntries=[];
+function initDCA(){dcaEntries=[];document.getElementById('dca-entries').innerHTML='';document.getElementById('dca-results').style.display='none';document.getElementById('dca-table-wrap').style.display='none';addDCAEntry();addDCAEntry();}
+function addDCAEntry(){const idx=dcaEntries.length;dcaEntries.push({price:'',shares:''});const wrap=document.createElement('div');wrap.id='dca-row-'+idx;wrap.style.cssText='display:flex;gap:12px;margin-bottom:10px;align-items:flex-end;';wrap.innerHTML=`<div style="flex:1;"><label class="tool-label">Buy #${idx+1} — Price ($)</label><input class="tool-input" type="number" placeholder="2.24" step="0.01" min="0.01" onchange="dcaEntries[${idx}].price=this.value;calcDCA()" oninput="dcaEntries[${idx}].price=this.value;calcDCA()"></div><div style="flex:1;"><label class="tool-label">Shares</label><input class="tool-input" type="number" placeholder="100" min="1" step="1" onchange="dcaEntries[${idx}].shares=this.value;calcDCA()" oninput="dcaEntries[${idx}].shares=this.value;calcDCA()"></div><button onclick="removeDCAEntry(${idx})" style="background:rgba(255,60,80,.1);border:1px solid rgba(255,60,80,.3);color:#ff3c50;width:38px;height:44px;border-radius:4px;cursor:pointer;font-size:16px;flex-shrink:0;margin-bottom:1px;">✕</button>`;document.getElementById('dca-entries').appendChild(wrap);}
+function removeDCAEntry(idx){dcaEntries[idx]={price:'',shares:'',removed:true};const row=document.getElementById('dca-row-'+idx);if(row)row.style.display='none';calcDCA();}
+function calcDCA(){const currentPrice=parseFloat(document.getElementById('dca-current').value);const ticker=(document.getElementById('dca-ticker').value||'STOCK').toUpperCase();const validEntries=dcaEntries.filter(e=>!e.removed&&parseFloat(e.price)>0&&parseFloat(e.shares)>0);if(validEntries.length===0){document.getElementById('dca-results').style.display='none';document.getElementById('dca-table-wrap').style.display='none';return;}let totalInvested=0,totalShares=0,runningInvested=0,runningShares=0;const rows=[];validEntries.forEach((e,i)=>{const price=parseFloat(e.price),shares=parseFloat(e.shares),cost=price*shares;runningInvested+=cost;runningShares+=shares;totalInvested+=cost;totalShares+=shares;const avgCost=runningInvested/runningShares;rows.push({num:i+1,price,shares,cost,avgCost,runningShares});});const avgCost=totalInvested/totalShares;document.getElementById('dca-results').style.display='block';document.getElementById('dca-avgcost').textContent='$'+avgCost.toFixed(4);document.getElementById('dca-totalshares').textContent=totalShares.toLocaleString(undefined,{maximumFractionDigits:4});document.getElementById('dca-invested').textContent='$'+totalInvested.toFixed(2);if(!isNaN(currentPrice)&&currentPrice>0){const currentValue=totalShares*currentPrice,pnl=currentValue-totalInvested,pnlPct=(pnl/totalInvested)*100;document.getElementById('dca-value').textContent='$'+currentValue.toFixed(2);const pnlEl=document.getElementById('dca-pnl'),pnlPctEl=document.getElementById('dca-pnlpct');pnlEl.textContent=(pnl>=0?'+$':'-$')+Math.abs(pnl).toFixed(2);pnlEl.style.color=pnl>=0?'#00ff88':'#ff3c50';pnlPctEl.textContent=(pnlPct>=0?'+':'')+pnlPct.toFixed(2)+'%';pnlPctEl.style.color=pnl>=0?'#00ff88':'#ff3c50';const verdict=document.getElementById('dca-verdict');if(pnl>=0){verdict.className='result-verdict verdict-good';verdict.textContent=`✅ ${ticker} is UP on your position!! Avg cost $${avgCost.toFixed(4)} vs current $${currentPrice.toFixed(2)} — you are profitable!!`;}else{verdict.className='result-verdict verdict-ok';verdict.textContent=`📉 ${ticker} is below your avg cost of $${avgCost.toFixed(4)}. Current price $${currentPrice.toFixed(2)} — still building your position!!`;}}else{document.getElementById('dca-value').textContent='—';document.getElementById('dca-pnl').textContent='—';document.getElementById('dca-pnlpct').textContent='—';document.getElementById('dca-verdict').textContent='';}document.getElementById('dca-table-wrap').style.display='block';const tbody=document.getElementById('dca-tbody');tbody.innerHTML='';rows.forEach(r=>{const tr=document.createElement('tr');tr.style.borderBottom='1px solid rgba(255,255,255,.05)';tr.innerHTML=`<td style="padding:9px 10px;color:rgba(255,255,255,.5);">Buy #${r.num}</td><td style="padding:9px 10px;text-align:right;color:#ffd700;">$${r.price.toFixed(4)}</td><td style="padding:9px 10px;text-align:right;color:#fff;">${r.shares.toLocaleString()}</td><td style="padding:9px 10px;text-align:right;color:rgba(255,255,255,.7);">$${r.cost.toFixed(2)}</td><td style="padding:9px 10px;text-align:right;color:#00ff88;font-weight:700;">$${r.avgCost.toFixed(4)}</td><td style="padding:9px 10px;text-align:right;color:#00f5ff;">${r.runningShares.toLocaleString()}</td>`;tbody.appendChild(tr);});}
+const _origOpenTool=window.openTool;window.openTool=function(id){if(id==='dca')initDCA();_origOpenTool(id);};
 
-function initDCA() {
-  dcaEntries = [];
-  document.getElementById('dca-entries').innerHTML = '';
-  document.getElementById('dca-results').style.display = 'none';
-  document.getElementById('dca-table-wrap').style.display = 'none';
-  addDCAEntry();
-  addDCAEntry();
-}
+function calcPositionSize(){const account=parseFloat(document.getElementById('ps-account').value),riskPct=parseFloat(document.getElementById('ps-risk').value),entry=parseFloat(document.getElementById('ps-entry').value),stop=parseFloat(document.getElementById('ps-stop').value);if([account,riskPct,entry,stop].some(isNaN)||entry<=0||stop<=0){alert('Please fill in all fields with valid numbers.');return;}if(stop>=entry){alert('Stop loss must be below your entry price.');return;}const maxLoss=account*(riskPct/100),riskShare=entry-stop,shares=Math.floor(maxLoss/riskShare),positionVal=shares*entry,pctUsed=(positionVal/account*100);document.getElementById('ps-shares').textContent=shares.toLocaleString();document.getElementById('ps-maxloss').textContent='$'+maxLoss.toFixed(2);document.getElementById('ps-position').textContent='$'+positionVal.toFixed(2);document.getElementById('ps-riskshare').textContent='$'+riskShare.toFixed(2);document.getElementById('ps-pctused').textContent=pctUsed.toFixed(1)+'%';const verdict=document.getElementById('ps-verdict');if(riskPct<=1){verdict.className='result-verdict verdict-good';verdict.textContent='✅ DISCIPLINED — Risk is under 1%. ABL approved trade.';}else if(riskPct<=2){verdict.className='result-verdict verdict-ok';verdict.textContent='⚠️ ACCEPTABLE — 2% risk. Stay disciplined and stick to your stop.';}else{verdict.className='result-verdict verdict-bad';verdict.textContent='🚨 HIGH RISK — Over 2%. Consider reducing your position size.';}document.getElementById('ps-results').classList.add('show');}
 
-function addDCAEntry() {
-  const idx = dcaEntries.length;
-  dcaEntries.push({ price: '', shares: '' });
-  const wrap = document.createElement('div');
-  wrap.id = 'dca-row-' + idx;
-  wrap.style.cssText = 'display:flex;gap:12px;margin-bottom:10px;align-items:flex-end;';
-  wrap.innerHTML = `
-    <div style="flex:1;">
-      <label class="tool-label">Buy #${idx + 1} — Price ($)</label>
-      <input class="tool-input" type="number" placeholder="2.24" step="0.01" min="0.01"
-        onchange="dcaEntries[${idx}].price=this.value;calcDCA()"
-        oninput="dcaEntries[${idx}].price=this.value;calcDCA()">
-    </div>
-    <div style="flex:1;">
-      <label class="tool-label">Shares</label>
-      <input class="tool-input" type="number" placeholder="100" min="1" step="1"
-        onchange="dcaEntries[${idx}].shares=this.value;calcDCA()"
-        oninput="dcaEntries[${idx}].shares=this.value;calcDCA()">
-    </div>
-    <button onclick="removeDCAEntry(${idx})" style="background:rgba(255,60,80,.1);border:1px solid rgba(255,60,80,.3);color:#ff3c50;width:38px;height:44px;border-radius:4px;cursor:pointer;font-size:16px;flex-shrink:0;margin-bottom:1px;">✕</button>
-  `;
-  document.getElementById('dca-entries').appendChild(wrap);
-}
+function calcRiskReward(){const entry=parseFloat(document.getElementById('rr-entry').value),stop=parseFloat(document.getElementById('rr-stop').value),target=parseFloat(document.getElementById('rr-target').value),shares=parseFloat(document.getElementById('rr-shares').value)||1;if([entry,stop,target].some(isNaN)||entry<=0){alert('Please fill in entry, stop loss, and target.');return;}if(stop>=entry){alert('Stop loss must be below your entry price.');return;}if(target<=entry){alert('Profit target must be above your entry price.');return;}const risk=entry-stop,reward=target-entry,ratio=reward/risk,profit=reward*shares,loss=risk*shares,upside=(reward/entry*100),breakeven=(1/(1+ratio)*100);document.getElementById('rr-ratio').textContent=ratio.toFixed(2)+':1';document.getElementById('rr-profit').textContent='+$'+profit.toFixed(2);document.getElementById('rr-loss').textContent='-$'+loss.toFixed(2);document.getElementById('rr-upside').textContent='+'+upside.toFixed(1)+'%';document.getElementById('rr-breakeven').textContent=breakeven.toFixed(1)+'%';const verdict=document.getElementById('rr-verdict');if(ratio>=3){verdict.className='result-verdict verdict-good';verdict.textContent='🔥 EXCELLENT SETUP — '+ratio.toFixed(1)+':1 R:R. This is a high-conviction trade.';}else if(ratio>=2){verdict.className='result-verdict verdict-good';verdict.textContent='✅ GOOD SETUP — '+ratio.toFixed(1)+':1 R:R. ABL minimum for a trade.';}else if(ratio>=1){verdict.className='result-verdict verdict-ok';verdict.textContent='⚠️ MARGINAL — '+ratio.toFixed(1)+':1 R:R. Look for a better entry or wider target.';}else{verdict.className='result-verdict verdict-bad';verdict.textContent="🚨 SKIP THIS TRADE — R:R is below 1:1. The math doesn't work.";}document.getElementById('rr-results').classList.add('show');}
 
-function removeDCAEntry(idx) {
-  dcaEntries[idx] = { price: '', shares: '', removed: true };
-  const row = document.getElementById('dca-row-' + idx);
-  if (row) row.style.display = 'none';
-  calcDCA();
-}
+function handleSubSubmit(e){setTimeout(()=>{document.getElementById('sub-success').style.display='block';e.target.querySelector('.sub-btn').style.display='none';},800);}
+function closeBanner(dismissed){const bar=document.getElementById('announce-bar');bar.style.transition='transform .3s ease, opacity .3s ease';bar.style.transform='translateY(-100%)';bar.style.opacity='0';document.body.classList.remove('banner-open');setTimeout(()=>{bar.style.display='none';},300);}
+document.addEventListener('DOMContentLoaded',()=>{document.body.classList.add('banner-open');});
 
-function calcDCA() {
-  const currentPrice = parseFloat(document.getElementById('dca-current').value);
-  const ticker = (document.getElementById('dca-ticker').value || 'STOCK').toUpperCase();
-  const validEntries = dcaEntries.filter(e => !e.removed && parseFloat(e.price) > 0 && parseFloat(e.shares) > 0);
-  if (validEntries.length === 0) {
-    document.getElementById('dca-results').style.display = 'none';
-    document.getElementById('dca-table-wrap').style.display = 'none';
-    return;
-  }
-
-  let totalInvested = 0;
-  let totalShares = 0;
-  let runningInvested = 0;
-  let runningShares = 0;
-  const rows = [];
-
-  validEntries.forEach((e, i) => {
-    const price = parseFloat(e.price);
-    const shares = parseFloat(e.shares);
-    const cost = price * shares;
-    runningInvested += cost;
-    runningShares += shares;
-    totalInvested += cost;
-    totalShares += shares;
-    const avgCost = runningInvested / runningShares;
-    rows.push({ num: i + 1, price, shares, cost, avgCost, runningShares });
-  });
-
-  const avgCost = totalInvested / totalShares;
-
-  // Results
-  document.getElementById('dca-results').style.display = 'block';
-  document.getElementById('dca-avgcost').textContent = '$' + avgCost.toFixed(4);
-  document.getElementById('dca-totalshares').textContent = totalShares.toLocaleString(undefined, {maximumFractionDigits: 4});
-  document.getElementById('dca-invested').textContent = '$' + totalInvested.toFixed(2);
-
-  if (!isNaN(currentPrice) && currentPrice > 0) {
-    const currentValue = totalShares * currentPrice;
-    const pnl = currentValue - totalInvested;
-    const pnlPct = (pnl / totalInvested) * 100;
-    document.getElementById('dca-value').textContent = '$' + currentValue.toFixed(2);
-    const pnlEl = document.getElementById('dca-pnl');
-    const pnlPctEl = document.getElementById('dca-pnlpct');
-    pnlEl.textContent = (pnl >= 0 ? '+$' : '-$') + Math.abs(pnl).toFixed(2);
-    pnlEl.style.color = pnl >= 0 ? '#00ff88' : '#ff3c50';
-    pnlPctEl.textContent = (pnlPct >= 0 ? '+' : '') + pnlPct.toFixed(2) + '%';
-    pnlPctEl.style.color = pnl >= 0 ? '#00ff88' : '#ff3c50';
-
-    const verdict = document.getElementById('dca-verdict');
-    if (pnl >= 0) {
-      verdict.className = 'result-verdict verdict-good';
-      verdict.textContent = `✅ ${ticker} is UP on your position!! Avg cost $${avgCost.toFixed(4)} vs current $${currentPrice.toFixed(2)} — you are profitable!!`;
-    } else {
-      verdict.className = 'result-verdict verdict-ok';
-      verdict.textContent = `📉 ${ticker} is below your avg cost of $${avgCost.toFixed(4)}. Current price $${currentPrice.toFixed(2)} — still building your position!!`;
-    }
-  } else {
-    document.getElementById('dca-value').textContent = '—';
-    document.getElementById('dca-pnl').textContent = '—';
-    document.getElementById('dca-pnlpct').textContent = '—';
-    document.getElementById('dca-verdict').textContent = '';
-  }
-
-  // Table
-  document.getElementById('dca-table-wrap').style.display = 'block';
-  const tbody = document.getElementById('dca-tbody');
-  tbody.innerHTML = '';
-  rows.forEach(r => {
-    const tr = document.createElement('tr');
-    tr.style.borderBottom = '1px solid rgba(255,255,255,.05)';
-    tr.innerHTML = `
-      <td style="padding:9px 10px;color:rgba(255,255,255,.5);">Buy #${r.num}</td>
-      <td style="padding:9px 10px;text-align:right;color:#ffd700;">$${r.price.toFixed(4)}</td>
-      <td style="padding:9px 10px;text-align:right;color:#fff;">${r.shares.toLocaleString()}</td>
-      <td style="padding:9px 10px;text-align:right;color:rgba(255,255,255,.7);">$${r.cost.toFixed(2)}</td>
-      <td style="padding:9px 10px;text-align:right;color:#00ff88;font-weight:700;">$${r.avgCost.toFixed(4)}</td>
-      <td style="padding:9px 10px;text-align:right;color:#00f5ff;">${r.runningShares.toLocaleString()}</td>
-    `;
-    tbody.appendChild(tr);
-  });
-}
-
-// Init DCA when modal opens
-const _origOpenTool = window.openTool;
-window.openTool = function(id) {
-  if (id === 'dca') initDCA();
-  _origOpenTool(id);
-};
-
-// ── POSITION SIZER ────────────────────────────────────────────────────────────
-function calcPositionSize() {
-  const account = parseFloat(document.getElementById('ps-account').value);
-  const riskPct = parseFloat(document.getElementById('ps-risk').value);
-  const entry   = parseFloat(document.getElementById('ps-entry').value);
-  const stop    = parseFloat(document.getElementById('ps-stop').value);
-  if ([account,riskPct,entry,stop].some(isNaN) || entry <= 0 || stop <= 0) {
-    alert('Please fill in all fields with valid numbers.'); return;
-  }
-  if (stop >= entry) { alert('Stop loss must be below your entry price.'); return; }
-  const maxLoss    = account * (riskPct / 100);
-  const riskShare  = entry - stop;
-  const shares     = Math.floor(maxLoss / riskShare);
-  const positionVal= shares * entry;
-  const pctUsed    = (positionVal / account * 100);
-
-  document.getElementById('ps-shares').textContent   = shares.toLocaleString();
-  document.getElementById('ps-maxloss').textContent  = '$' + maxLoss.toFixed(2);
-  document.getElementById('ps-position').textContent = '$' + positionVal.toFixed(2);
-  document.getElementById('ps-riskshare').textContent= '$' + riskShare.toFixed(2);
-  document.getElementById('ps-pctused').textContent  = pctUsed.toFixed(1) + '%';
-
-  const verdict = document.getElementById('ps-verdict');
-  if (riskPct <= 1) {
-    verdict.className = 'result-verdict verdict-good';
-    verdict.textContent = '✅ DISCIPLINED — Risk is under 1%. ABL approved trade.';
-  } else if (riskPct <= 2) {
-    verdict.className = 'result-verdict verdict-ok';
-    verdict.textContent = '⚠️ ACCEPTABLE — 2% risk. Stay disciplined and stick to your stop.';
-  } else {
-    verdict.className = 'result-verdict verdict-bad';
-    verdict.textContent = '🚨 HIGH RISK — Over 2%. Consider reducing your position size.';
-  }
-  document.getElementById('ps-results').classList.add('show');
-}
-
-// ── RISK / REWARD ─────────────────────────────────────────────────────────────
-function calcRiskReward() {
-  const entry  = parseFloat(document.getElementById('rr-entry').value);
-  const stop   = parseFloat(document.getElementById('rr-stop').value);
-  const target = parseFloat(document.getElementById('rr-target').value);
-  const shares = parseFloat(document.getElementById('rr-shares').value) || 1;
-  if ([entry,stop,target].some(isNaN) || entry <= 0) {
-    alert('Please fill in entry, stop loss, and target.'); return;
-  }
-  if (stop >= entry) { alert('Stop loss must be below your entry price.'); return; }
-  if (target <= entry) { alert('Profit target must be above your entry price.'); return; }
-
-  const risk    = entry - stop;
-  const reward  = target - entry;
-  const ratio   = reward / risk;
-  const profit  = reward * shares;
-  const loss    = risk * shares;
-  const upside  = (reward / entry * 100);
-  const breakeven = (1 / (1 + ratio) * 100);
-
-  document.getElementById('rr-ratio').textContent    = ratio.toFixed(2) + ':1';
-  document.getElementById('rr-profit').textContent   = '+$' + profit.toFixed(2);
-  document.getElementById('rr-loss').textContent     = '-$' + loss.toFixed(2);
-  document.getElementById('rr-upside').textContent   = '+' + upside.toFixed(1) + '%';
-  document.getElementById('rr-breakeven').textContent= breakeven.toFixed(1) + '%';
-
-  const verdict = document.getElementById('rr-verdict');
-  if (ratio >= 3) {
-    verdict.className = 'result-verdict verdict-good';
-    verdict.textContent = '🔥 EXCELLENT SETUP — ' + ratio.toFixed(1) + ':1 R:R. This is a high-conviction trade.';
-  } else if (ratio >= 2) {
-    verdict.className = 'result-verdict verdict-good';
-    verdict.textContent = '✅ GOOD SETUP — ' + ratio.toFixed(1) + ':1 R:R. ABL minimum for a trade.';
-  } else if (ratio >= 1) {
-    verdict.className = 'result-verdict verdict-ok';
-    verdict.textContent = '⚠️ MARGINAL — ' + ratio.toFixed(1) + ':1 R:R. Look for a better entry or wider target.';
-  } else {
-    verdict.className = 'result-verdict verdict-bad';
-    verdict.textContent = '🚨 SKIP THIS TRADE — R:R is below 1:1. The math doesn\'t work.';
-  }
-  document.getElementById('rr-results').classList.add('show');
-}
-</script>
-
-<script>
-</script>
-
-<script>
-// Subscribe form handler
-function handleSubSubmit(e) {
-  // Let ConvertKit handle the real submission via form action
-  // Show success message after brief delay
-  setTimeout(() => {
-    document.getElementById('sub-success').style.display = 'block';
-    e.target.querySelector('.sub-btn').style.display = 'none';
-  }, 800);
-}
-
-// Announcement banner
-function closeBanner(dismissed) {
-  const bar = document.getElementById('announce-bar');
-  bar.style.transition = 'transform .3s ease, opacity .3s ease';
-  bar.style.transform = 'translateY(-100%)';
-  bar.style.opacity = '0';
-  document.body.classList.remove('banner-open');
-  setTimeout(() => { bar.style.display = 'none'; }, 300);
-}
-document.addEventListener('DOMContentLoaded', () => {
-  document.body.classList.add('banner-open');
-});
-
-const tickers=[
-  {sym:'AAPL',price:'189.42',chg:'+1.23%',up:true},{sym:'TSLA',price:'248.75',chg:'+3.59%',up:true},
-  {sym:'NVDA',price:'875.20',chg:'+1.44%',up:true},{sym:'SPY',price:'512.88',chg:'+0.81%',up:true},
-  {sym:'AMZN',price:'185.20',chg:'-0.77%',up:false},{sym:'META',price:'502.13',chg:'+2.01%',up:true},
-  {sym:'QQQ',price:'445.92',chg:'+1.29%',up:true},{sym:'AMD',price:'168.30',chg:'+4.16%',up:true},
-  {sym:'MSFT',price:'415.60',chg:'+0.78%',up:true},{sym:'GOOGL',price:'156.40',chg:'-0.56%',up:false},
-];
+const tickers=[{sym:'AAPL',price:'189.42',chg:'+1.23%',up:true},{sym:'TSLA',price:'248.75',chg:'+3.59%',up:true},{sym:'NVDA',price:'875.20',chg:'+1.44%',up:true},{sym:'SPY',price:'512.88',chg:'+0.81%',up:true},{sym:'AMZN',price:'185.20',chg:'-0.77%',up:false},{sym:'META',price:'502.13',chg:'+2.01%',up:true},{sym:'QQQ',price:'445.92',chg:'+1.29%',up:true},{sym:'AMD',price:'168.30',chg:'+4.16%',up:true},{sym:'MSFT',price:'415.60',chg:'+0.78%',up:true},{sym:'GOOGL',price:'156.40',chg:'-0.56%',up:false}];
 const track=document.getElementById('tickerTrack');
-track.innerHTML=[...tickers,...tickers].map(t=>`
-  <span class="tick-item">
-    <span class="tick-sym">${t.sym}</span>
-    <span>${t.price}</span>
-    <span class="${t.up?'tick-up':'tick-dn'}">${t.chg} ${t.up?'▲':'▼'}</span>
-  </span><span class="tick-sep">|</span>`).join('');
+track.innerHTML=[...tickers,...tickers].map(t=>`<span class="tick-item"><span class="tick-sym">${t.sym}</span><span>${t.price}</span><span class="${t.up?'tick-up':'tick-dn'}">${t.chg} ${t.up?'▲':'▼'}</span></span><span class="tick-sep">|</span>`).join('');
 
-// Animate sections on scroll
-const observer=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.style.opacity='1';
-      e.target.style.transform='translateY(0)';
-    }
-  });
-},{threshold:0.1});
-document.querySelectorAll('.series-card,.social-card,.slogan-item').forEach(el=>{
-  el.style.opacity='0';el.style.transform='translateY(20px)';
-  el.style.transition='opacity .6s ease, transform .6s ease';
-  observer.observe(el);
-});
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});},{threshold:0.1});
+document.querySelectorAll('.series-card,.social-card,.slogan-item').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .6s ease, transform .6s ease';observer.observe(el);});
 </script>
 </body>
 </html>

@@ -1,0 +1,1464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trader's Journal | Alpha Breakout Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #060b16;
+  --surface: #0c1422;
+  --surface2: #111c2e;
+  --border: #1a2840;
+  --cyan: #00f5ff;
+  --gold: #ffd700;
+  --green: #00ff88;
+  --red: #ff4466;
+  --purple: #a78bfa;
+  --white: #e8f0fe;
+  --muted: #4a6080;
+  --text: #c8d8f0;
+}
+
+*,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Rajdhani', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0,245,255,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,245,255,0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HEADER ── */
+header {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(6,11,22,0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+}
+
+.header-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+
+.brand {
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none;
+}
+
+.brand-logo {
+  font-family: 'Orbitron', monospace;
+  font-size: 18px; font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--cyan);
+  text-shadow: 0 0 14px var(--cyan);
+  letter-spacing: 3px;
+}
+
+.brand-sep { width: 1px; height: 20px; background: var(--gold); opacity: .5; }
+
+.brand-sub {
+  font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,.5);
+  letter-spacing: 3px; text-transform: uppercase;
+}
+
+.header-back {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 600; letter-spacing: 2px;
+  color: var(--muted); text-decoration: none;
+  transition: color .2s;
+}
+.header-back:hover { color: var(--cyan); }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  position: relative; z-index: 1;
+}
+
+.stats-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: flex; align-items: center;
+  gap: 0;
+  height: 56px;
+}
+
+.stat-item {
+  display: flex; flex-direction: column;
+  padding: 0 28px;
+  border-right: 1px solid var(--border);
+  min-width: 140px;
+}
+
+.stat-item:first-child { padding-left: 0; }
+
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px; letter-spacing: 2px;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.stat-value {
+  font-family: 'Orbitron', monospace;
+  font-size: 18px; font-weight: 700;
+}
+
+.stat-value.pos { color: var(--green); text-shadow: 0 0 10px rgba(0,255,136,.3); }
+.stat-value.neg { color: var(--red); }
+.stat-value.neutral { color: var(--cyan); }
+
+.stats-right {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 12px;
+}
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 8px 18px; border-radius: 6px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 13px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; cursor: pointer;
+  border: none; transition: all .2s;
+}
+
+.btn-cyan {
+  background: rgba(0,245,255,.1);
+  border: 1px solid rgba(0,245,255,.3);
+  color: var(--cyan);
+}
+.btn-cyan:hover { background: rgba(0,245,255,.2); box-shadow: 0 0 16px rgba(0,245,255,.2); }
+
+.btn-gold {
+  background: rgba(255,215,0,.1);
+  border: 1px solid rgba(255,215,0,.3);
+  color: var(--gold);
+}
+.btn-gold:hover { background: rgba(255,215,0,.2); }
+
+.btn-green {
+  background: rgba(0,255,136,.1);
+  border: 1px solid rgba(0,255,136,.3);
+  color: var(--green);
+}
+.btn-green:hover { background: rgba(0,255,136,.2); }
+
+/* ── MAIN ── */
+.main {
+  max-width: 1400px; margin: 0 auto;
+  padding: 24px;
+  position: relative; z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+}
+
+/* ── CALENDAR ── */
+.calendar-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.cal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.cal-nav {
+  display: flex; align-items: center; gap: 16px;
+}
+
+.cal-nav-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  width: 34px; height: 34px;
+  border-radius: 6px;
+  font-size: 16px; cursor: pointer;
+  transition: all .2s;
+  display: flex; align-items: center; justify-content: center;
+}
+.cal-nav-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+.cal-month {
+  font-family: 'Orbitron', monospace;
+  font-size: 20px; font-weight: 700;
+  color: var(--white); letter-spacing: 2px;
+}
+
+.cal-view-toggle {
+  display: flex; gap: 8px;
+}
+
+.view-btn {
+  padding: 6px 14px;
+  border-radius: 4px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 12px; font-weight: 700; letter-spacing: 2px;
+  cursor: pointer; border: 1px solid var(--border);
+  background: transparent; color: var(--muted);
+  transition: all .2s;
+}
+.view-btn.active {
+  background: rgba(0,245,255,.1);
+  border-color: rgba(0,245,255,.3);
+  color: var(--cyan);
+}
+
+/* Day of week headers */
+.cal-days-header {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  border-bottom: 1px solid var(--border);
+}
+
+.cal-day-label {
+  padding: 10px 0;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 2px;
+  color: var(--muted); text-transform: uppercase;
+}
+
+/* Calendar grid */
+.cal-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+}
+
+.cal-cell {
+  min-height: 90px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 8px;
+  cursor: pointer;
+  transition: background .15s;
+  position: relative;
+}
+
+.cal-cell:nth-child(7n) { border-right: none; }
+.cal-cell:hover { background: rgba(0,245,255,.03); }
+.cal-cell.today { background: rgba(0,245,255,.05); }
+.cal-cell.today .cell-date { color: var(--cyan); }
+.cal-cell.other-month { opacity: .3; }
+.cal-cell.selected { background: rgba(0,245,255,.08); border-color: rgba(0,245,255,.2); }
+
+.cell-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; font-weight: 500;
+  color: var(--muted); margin-bottom: 4px;
+}
+
+.cell-pnl {
+  font-family: 'Orbitron', monospace;
+  font-size: 11px; font-weight: 700;
+  margin-bottom: 3px;
+}
+.cell-pnl.pos { color: var(--green); }
+.cell-pnl.neg { color: var(--red); }
+
+.cell-trades {
+  font-size: 10px; color: var(--muted);
+  letter-spacing: 1px;
+}
+
+.cell-reminder {
+  margin-top: 4px;
+  background: rgba(255,215,0,.1);
+  border: 1px solid rgba(255,215,0,.2);
+  border-radius: 3px;
+  padding: 2px 5px;
+  font-size: 9px; color: var(--gold);
+  letter-spacing: 1px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+/* Day P&L indicator dot */
+.cell-dot {
+  position: absolute; top: 6px; right: 6px;
+  width: 6px; height: 6px; border-radius: 50%;
+}
+.cell-dot.pos { background: var(--green); box-shadow: 0 0 6px var(--green); }
+.cell-dot.neg { background: var(--red); box-shadow: 0 0 6px var(--red); }
+
+/* ── WEEKLY SUMMARY ── */
+.week-row {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr) 80px;
+  border-bottom: 1px solid var(--border);
+}
+
+.week-total {
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 8px 4px;
+  background: var(--surface2);
+  border-left: 1px solid var(--border);
+}
+
+.week-total-label {
+  font-size: 8px; letter-spacing: 1px;
+  color: var(--muted); text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.week-total-val {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px; font-weight: 700;
+}
+
+/* ── RIGHT PANEL ── */
+.right-panel {
+  display: flex; flex-direction: column; gap: 20px;
+}
+
+/* Day detail */
+.day-detail {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.panel-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  color: var(--white); letter-spacing: 2px;
+}
+
+.panel-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--muted);
+}
+
+/* Trade list */
+.trade-list {
+  padding: 12px;
+  max-height: 280px;
+  overflow-y: auto;
+  display: flex; flex-direction: column; gap: 8px;
+}
+
+.trade-list::-webkit-scrollbar { width: 4px; }
+.trade-list::-webkit-scrollbar-track { background: transparent; }
+.trade-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.trade-item {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: border-color .15s;
+}
+.trade-item:hover { border-color: rgba(0,245,255,.2); }
+
+.trade-item-top {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.trade-ticker {
+  font-family: 'Orbitron', monospace;
+  font-size: 14px; font-weight: 700;
+  color: var(--cyan);
+}
+
+.trade-pnl {
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+}
+.trade-pnl.pos { color: var(--green); }
+.trade-pnl.neg { color: var(--red); }
+
+.trade-item-bottom {
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+
+.trade-badge {
+  font-size: 10px; letter-spacing: 1px;
+  padding: 2px 7px; border-radius: 3px;
+}
+
+.badge-buy { background: rgba(0,255,136,.1); color: var(--green); border: 1px solid rgba(0,255,136,.2); }
+.badge-sell { background: rgba(255,68,102,.1); color: var(--red); border: 1px solid rgba(255,68,102,.2); }
+.badge-setup { background: rgba(0,245,255,.08); color: var(--cyan); border: 1px solid rgba(0,245,255,.15); }
+.badge-emotion { background: rgba(167,139,250,.08); color: var(--purple); border: 1px solid rgba(167,139,250,.15); }
+.badge-system-yes { background: rgba(0,255,136,.08); color: var(--green); border: 1px solid rgba(0,255,136,.15); }
+.badge-system-no { background: rgba(255,68,102,.08); color: var(--red); border: 1px solid rgba(255,68,102,.15); }
+
+.empty-state {
+  padding: 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 13px; letter-spacing: 1px;
+}
+
+/* ── REMINDERS PANEL ── */
+.reminders-panel {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.reminder-list {
+  padding: 12px;
+  display: flex; flex-direction: column; gap: 8px;
+  max-height: 200px; overflow-y: auto;
+}
+
+.reminder-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--surface2);
+  border: 1px solid rgba(255,215,0,.15);
+  border-radius: 6px;
+  padding: 8px 10px;
+}
+
+.reminder-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 6px var(--gold);
+  margin-top: 4px; flex-shrink: 0;
+}
+
+.reminder-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; color: var(--gold);
+  margin-bottom: 2px;
+}
+
+.reminder-text {
+  font-size: 12px; color: var(--text);
+  line-height: 1.4;
+}
+
+.reminder-del {
+  margin-left: auto; background: none; border: none;
+  color: var(--muted); cursor: pointer; font-size: 14px;
+  flex-shrink: 0; transition: color .15s;
+}
+.reminder-del:hover { color: var(--red); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.85);
+  backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .2s;
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  width: 100%; max-width: 560px;
+  max-height: 90vh; overflow-y: auto;
+  transform: translateY(20px);
+  transition: transform .2s;
+}
+.modal-overlay.open .modal { transform: translateY(0); }
+
+.modal-top {
+  height: 3px; border-radius: 14px 14px 0 0;
+  background: linear-gradient(90deg, var(--cyan), var(--purple));
+}
+
+.modal-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 20px 24px 0;
+}
+
+.modal-title {
+  font-family: 'Orbitron', monospace;
+  font-size: 16px; font-weight: 700;
+  color: var(--white); letter-spacing: 2px;
+}
+
+.modal-close {
+  background: none; border: none;
+  color: var(--muted); font-size: 22px;
+  cursor: pointer; transition: color .2s;
+  line-height: 1;
+}
+.modal-close:hover { color: var(--white); }
+
+.modal-body { padding: 20px 24px 28px; }
+
+/* Form */
+.form-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 14px; margin-bottom: 14px;
+}
+.form-grid.single { grid-template-columns: 1fr; }
+
+.form-field { display: flex; flex-direction: column; gap: 5px; }
+
+.form-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 2px;
+  color: var(--muted); text-transform: uppercase;
+}
+
+.form-input, .form-select, .form-textarea {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 16px; font-weight: 500;
+  color: var(--white); outline: none;
+  transition: border-color .2s; width: 100%;
+}
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  border-color: var(--cyan);
+}
+.form-select option { background: var(--surface2); }
+.form-textarea { resize: vertical; min-height: 70px; }
+
+.form-pnl-display {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 10px 12px;
+  font-family: 'Orbitron', monospace;
+  font-size: 18px; font-weight: 700;
+  text-align: center;
+  min-height: 44px; display: flex;
+  align-items: center; justify-content: center;
+}
+
+.submit-btn {
+  width: 100%; margin-top: 6px;
+  padding: 14px;
+  background: rgba(0,245,255,.12);
+  border: 1.5px solid var(--cyan);
+  border-radius: 8px;
+  font-family: 'Orbitron', monospace;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--cyan); cursor: pointer;
+  transition: all .2s;
+}
+.submit-btn:hover {
+  background: rgba(0,245,255,.22);
+  box-shadow: 0 0 20px rgba(0,245,255,.2);
+}
+
+/* Reminder modal top bar */
+.modal-top.gold {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width: 1024px) {
+  .main { grid-template-columns: 1fr; }
+  .stats-inner { flex-wrap: wrap; height: auto; padding: 10px 0; gap: 10px; }
+  .stat-item { border-right: none; min-width: 100px; }
+}
+
+@media(max-width: 640px) {
+  .cal-cell { min-height: 60px; }
+  .main { padding: 12px; }
+}
+
+/* ── ANIMATIONS ── */
+.fade-in { animation: fadeIn .3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <a href="#" class="brand">
+      <span class="brand-logo">ALPHA</span>
+      <div class="brand-sep"></div>
+      <span class="brand-sub">Breakout Lab</span>
+    </a>
+    <a href="/" class="header-back">← Back to Site</a>
+  </div>
+</header>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-label">This Month</div>
+      <div class="stat-value neutral" id="stat-month">$0.00</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">This Year</div>
+      <div class="stat-value neutral" id="stat-year">$0.00</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">YTD P&L</div>
+      <div class="stat-value neutral" id="stat-ytd">$0.00</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Win Rate</div>
+      <div class="stat-value neutral" id="stat-winrate">—</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Total Trades</div>
+      <div class="stat-value neutral" id="stat-trades">0</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">System Followed</div>
+      <div class="stat-value neutral" id="stat-system">—</div>
+    </div>
+    <div class="stats-right">
+      <button class="btn btn-gold" onclick="openReminderModal()">🔔 Add Reminder</button>
+      <button class="btn btn-green" onclick="openTradeModal()">＋ Log Trade</button>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- CALENDAR -->
+  <div class="calendar-panel">
+    <div class="cal-header">
+      <div class="cal-nav">
+        <button class="cal-nav-btn" onclick="changeMonth(-1)">‹</button>
+        <div class="cal-month" id="cal-month-label">May 2026</div>
+        <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
+      </div>
+      <button class="btn btn-cyan" onclick="goToday()">Today</button>
+    </div>
+
+    <div class="cal-days-header">
+      <div class="cal-day-label">Sun</div>
+      <div class="cal-day-label">Mon</div>
+      <div class="cal-day-label">Tue</div>
+      <div class="cal-day-label">Wed</div>
+      <div class="cal-day-label">Thu</div>
+      <div class="cal-day-label">Fri</div>
+      <div class="cal-day-label">Sat</div>
+    </div>
+
+    <div id="cal-grid"></div>
+  </div>
+
+  <!-- RIGHT PANEL -->
+  <div class="right-panel">
+
+    <!-- Day Detail -->
+    <div class="day-detail">
+      <div class="panel-header">
+        <div class="panel-title">📋 DAY DETAIL</div>
+        <div class="panel-date" id="detail-date">Select a day</div>
+      </div>
+      <div id="trade-list" class="trade-list">
+        <div class="empty-state">Click any day to view trades</div>
+      </div>
+      <div style="padding:12px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:12px;color:var(--muted);letter-spacing:1px;">Day Total:</div>
+        <div class="stat-value neutral" id="day-total" style="font-size:16px;">$0.00</div>
+      </div>
+    </div>
+
+    <!-- Reminders -->
+    <div class="reminders-panel">
+      <div class="panel-header">
+        <div class="panel-title">🔔 REMINDERS</div>
+        <button class="btn btn-gold" style="padding:4px 10px;font-size:11px;" onclick="openReminderModal()">+ Add</button>
+      </div>
+      <div id="reminder-list" class="reminder-list">
+        <div class="empty-state">No reminders yet</div>
+      </div>
+    </div>
+
+    <!-- Weekly Summary -->
+    <div class="day-detail">
+      <div class="panel-header">
+        <div class="panel-title">📊 WEEKLY SUMMARY</div>
+      </div>
+      <div id="weekly-summary" style="padding:12px;display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TRADE MODAL -->
+<div class="modal-overlay" id="trade-modal">
+  <div class="modal">
+    <div class="modal-top"></div>
+    <div class="modal-header">
+      <div class="modal-title">LOG TRADE</div>
+      <button class="modal-close" onclick="closeTradeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">Ticker</label>
+          <input class="form-input" id="f-ticker" type="text" placeholder="CADL" style="text-transform:uppercase;">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Date</label>
+          <input class="form-input" id="f-date" type="date">
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">Buy / Sell</label>
+          <select class="form-select" id="f-type">
+            <option value="BUY">BUY</option>
+            <option value="SELL">SELL</option>
+            <option value="SHORT">SHORT</option>
+            <option value="COVER">COVER</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Setup Type</label>
+          <select class="form-select" id="f-setup">
+            <option value="Farming">Farming</option>
+            <option value="Breakout">Breakout</option>
+            <option value="Catalyst">Catalyst</option>
+            <option value="Scalp">Scalp</option>
+            <option value="DCA">DCA</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">Entry Price ($)</label>
+          <input class="form-input" id="f-entry" type="number" placeholder="0.00" step="0.01" oninput="calcPnl()">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Exit Price ($)</label>
+          <input class="form-input" id="f-exit" type="number" placeholder="0.00" step="0.01" oninput="calcPnl()">
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">Stop Loss ($)</label>
+          <input class="form-input" id="f-stop" type="number" placeholder="0.00" step="0.01">
+        </div>
+        <div class="form-field">
+          <label class="form-label">Shares</label>
+          <input class="form-input" id="f-shares" type="number" placeholder="100" min="1" oninput="calcPnl()">
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">P&L (Auto Calculated)</label>
+          <div class="form-pnl-display" id="f-pnl-display">—</div>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Result</label>
+          <select class="form-select" id="f-result">
+            <option value="WIN">WIN ✅</option>
+            <option value="LOSS">LOSS ❌</option>
+            <option value="BREAKEVEN">BREAKEVEN ➖</option>
+            <option value="OPEN">STILL OPEN 🔄</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-field">
+          <label class="form-label">Followed My System?</label>
+          <select class="form-select" id="f-system">
+            <option value="YES">YES ✅</option>
+            <option value="NO">NO ❌</option>
+            <option value="PARTIAL">PARTIAL ⚠️</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label class="form-label">Emotion</label>
+          <select class="form-select" id="f-emotion">
+            <option value="Confident">Confident 💪</option>
+            <option value="Neutral">Neutral 😐</option>
+            <option value="Anxious">Anxious 😰</option>
+            <option value="FOMO">FOMO 🚨</option>
+            <option value="Greedy">Greedy 🤑</option>
+            <option value="Fearful">Fearful 😨</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-grid single">
+        <div class="form-field">
+          <label class="form-label">Notes</label>
+          <textarea class="form-textarea" id="f-notes" placeholder="Setup details, lessons learned, what went well..."></textarea>
+        </div>
+      </div>
+      <button class="submit-btn" onclick="saveTrade()">SAVE TRADE</button>
+    </div>
+  </div>
+</div>
+
+<!-- REMINDER MODAL -->
+<div class="modal-overlay" id="reminder-modal">
+  <div class="modal" style="max-width:420px;">
+    <div class="modal-top gold"></div>
+    <div class="modal-header">
+      <div class="modal-title" style="color:var(--gold);">ADD REMINDER</div>
+      <button class="modal-close" onclick="closeReminderModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid single" style="margin-bottom:14px;">
+        <div class="form-field">
+          <label class="form-label">Date</label>
+          <input class="form-input" id="r-date" type="date">
+        </div>
+      </div>
+      <div class="form-grid single" style="margin-bottom:14px;">
+        <div class="form-field">
+          <label class="form-label">Reminder</label>
+          <input class="form-input" id="r-text" type="text" placeholder="CADL earnings May 15 · UNCY PDUFA June 27">
+        </div>
+      </div>
+      <button class="submit-btn" style="border-color:var(--gold);color:var(--gold);background:rgba(255,215,0,.1);" onclick="saveReminder()">SAVE REMINDER</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════════════════════
+const TRADES_KEY = 'abl_trades';
+const REMINDERS_KEY = 'abl_reminders';
+
+function loadTrades() {
+  try { return JSON.parse(localStorage.getItem(TRADES_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveTrades(trades) {
+  localStorage.setItem(TRADES_KEY, JSON.stringify(trades));
+}
+
+function loadReminders() {
+  try { return JSON.parse(localStorage.getItem(REMINDERS_KEY)) || []; }
+  catch { return []; }
+}
+
+function saveReminders(reminders) {
+  localStorage.setItem(REMINDERS_KEY, JSON.stringify(reminders));
+}
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let currentYear = new Date().getFullYear();
+let currentMonth = new Date().getMonth(); // 0-indexed
+let selectedDate = null;
+let editingTradeId = null;
+
+// ═══════════════════════════════════════════════════════
+// CALENDAR
+// ═══════════════════════════════════════════════════════
+const MONTHS = ['January','February','March','April','May','June',
+                'July','August','September','October','November','December'];
+
+function renderCalendar() {
+  const trades = loadTrades();
+  const reminders = loadReminders();
+  const today = new Date();
+
+  document.getElementById('cal-month-label').textContent =
+    `${MONTHS[currentMonth]} ${currentYear}`;
+
+  const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+  const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+  const daysInPrev = new Date(currentYear, currentMonth, 0).getDate();
+
+  // Group trades by date
+  const tradesByDate = {};
+  trades.forEach(t => {
+    if (!tradesByDate[t.date]) tradesByDate[t.date] = [];
+    tradesByDate[t.date].push(t);
+  });
+
+  // Group reminders by date
+  const remindersByDate = {};
+  reminders.forEach(r => {
+    if (!remindersByDate[r.date]) remindersByDate[r.date] = [];
+    remindersByDate[r.date].push(r);
+  });
+
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  let weekRow = null;
+  let dayCount = 0;
+  const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
+
+  for (let i = 0; i < totalCells; i++) {
+    if (i % 7 === 0) {
+      weekRow = document.createElement('div');
+      weekRow.style.cssText = 'display:grid;grid-template-columns:repeat(7,1fr) 80px;';
+      grid.appendChild(weekRow);
+    }
+
+    const cell = document.createElement('div');
+    cell.className = 'cal-cell';
+
+    let dateStr = null;
+    let dayNum = null;
+    let isOther = false;
+
+    if (i < firstDay) {
+      dayNum = daysInPrev - firstDay + i + 1;
+      isOther = true;
+      const d = new Date(currentYear, currentMonth - 1, dayNum);
+      dateStr = formatDate(d);
+      cell.classList.add('other-month');
+    } else if (i >= firstDay + daysInMonth) {
+      dayNum = i - firstDay - daysInMonth + 1;
+      isOther = true;
+      const d = new Date(currentYear, currentMonth + 1, dayNum);
+      dateStr = formatDate(d);
+      cell.classList.add('other-month');
+    } else {
+      dayNum = i - firstDay + 1;
+      const d = new Date(currentYear, currentMonth, dayNum);
+      dateStr = formatDate(d);
+
+      // Today highlight
+      if (d.toDateString() === today.toDateString()) {
+        cell.classList.add('today');
+      }
+
+      // Selected
+      if (dateStr === selectedDate) cell.classList.add('selected');
+    }
+
+    // Date number
+    const dateEl = document.createElement('div');
+    dateEl.className = 'cell-date';
+    dateEl.textContent = dayNum;
+    cell.appendChild(dateEl);
+
+    // Trades for this day
+    if (dateStr && tradesByDate[dateStr]) {
+      const dayTrades = tradesByDate[dateStr];
+      const dayPnl = dayTrades.reduce((sum, t) => sum + (t.pnl || 0), 0);
+
+      const pnlEl = document.createElement('div');
+      pnlEl.className = 'cell-pnl ' + (dayPnl >= 0 ? 'pos' : 'neg');
+      pnlEl.textContent = (dayPnl >= 0 ? '+$' : '-$') + Math.abs(dayPnl).toFixed(2);
+      cell.appendChild(pnlEl);
+
+      const tradesEl = document.createElement('div');
+      tradesEl.className = 'cell-trades';
+      tradesEl.textContent = dayTrades.length + ' trade' + (dayTrades.length !== 1 ? 's' : '');
+      cell.appendChild(tradesEl);
+
+      const dot = document.createElement('div');
+      dot.className = 'cell-dot ' + (dayPnl >= 0 ? 'pos' : 'neg');
+      cell.appendChild(dot);
+    }
+
+    // Reminders for this day
+    if (dateStr && remindersByDate[dateStr]) {
+      remindersByDate[dateStr].forEach(r => {
+        const rem = document.createElement('div');
+        rem.className = 'cell-reminder';
+        rem.textContent = '🔔 ' + r.text;
+        cell.appendChild(rem);
+      });
+    }
+
+    cell.onclick = () => selectDay(dateStr, dayNum, isOther);
+    weekRow.appendChild(cell);
+
+    // Weekly total column
+    if ((i + 1) % 7 === 0) {
+      const weekStart = i - 6;
+      const weekEnd = i;
+      let weekPnl = 0;
+      let weekTradeCount = 0;
+
+      for (let d = weekStart; d <= weekEnd; d++) {
+        let ds = null;
+        if (d < firstDay) {
+          const dn = daysInPrev - firstDay + d + 1;
+          ds = formatDate(new Date(currentYear, currentMonth - 1, dn));
+        } else if (d >= firstDay + daysInMonth) {
+          const dn = d - firstDay - daysInMonth + 1;
+          ds = formatDate(new Date(currentYear, currentMonth + 1, dn));
+        } else {
+          const dn = d - firstDay + 1;
+          ds = formatDate(new Date(currentYear, currentMonth, dn));
+        }
+        if (ds && tradesByDate[ds]) {
+          tradesByDate[ds].forEach(t => {
+            weekPnl += (t.pnl || 0);
+            weekTradeCount++;
+          });
+        }
+      }
+
+      const weekCell = document.createElement('div');
+      weekCell.className = 'week-total';
+      weekCell.innerHTML = `
+        <div class="week-total-label">Week</div>
+        <div class="week-total-val ${weekPnl >= 0 ? 'pos' : 'neg'}"
+             style="color:${weekPnl >= 0 ? 'var(--green)' : 'var(--red)'}">
+          ${weekPnl >= 0 ? '+$' : '-$'}${Math.abs(weekPnl).toFixed(0)}
+        </div>
+      `;
+      weekRow.appendChild(weekCell);
+    }
+
+    dayCount++;
+  }
+
+  updateStats();
+  renderReminders();
+  if (selectedDate) renderDayDetail(selectedDate);
+  renderWeeklySummary();
+}
+
+function selectDay(dateStr, dayNum, isOther) {
+  selectedDate = dateStr;
+  renderCalendar();
+  renderDayDetail(dateStr);
+
+  // Update detail date label
+  const d = new Date(dateStr + 'T00:00:00');
+  document.getElementById('detail-date').textContent =
+    d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+}
+
+function changeMonth(dir) {
+  currentMonth += dir;
+  if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+  if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+  renderCalendar();
+}
+
+function goToday() {
+  currentYear = new Date().getFullYear();
+  currentMonth = new Date().getMonth();
+  renderCalendar();
+}
+
+// ═══════════════════════════════════════════════════════
+// DAY DETAIL
+// ═══════════════════════════════════════════════════════
+function renderDayDetail(dateStr) {
+  const trades = loadTrades().filter(t => t.date === dateStr);
+  const list = document.getElementById('trade-list');
+
+  if (trades.length === 0) {
+    list.innerHTML = `<div class="empty-state">No trades on this day<br><span style="color:var(--cyan);cursor:pointer;" onclick="openTradeModal('${dateStr}')">+ Log a trade</span></div>`;
+    document.getElementById('day-total').textContent = '$0.00';
+    document.getElementById('day-total').className = 'stat-value neutral';
+    return;
+  }
+
+  const dayPnl = trades.reduce((s, t) => s + (t.pnl || 0), 0);
+
+  list.innerHTML = trades.map(t => `
+    <div class="trade-item fade-in" onclick="editTrade('${t.id}')">
+      <div class="trade-item-top">
+        <div class="trade-ticker">${t.ticker}</div>
+        <div class="trade-pnl ${(t.pnl || 0) >= 0 ? 'pos' : 'neg'}">
+          ${(t.pnl || 0) >= 0 ? '+$' : '-$'}${Math.abs(t.pnl || 0).toFixed(2)}
+        </div>
+      </div>
+      <div class="trade-item-bottom">
+        <span class="trade-badge ${t.type === 'BUY' || t.type === 'COVER' ? 'badge-buy' : 'badge-sell'}">${t.type}</span>
+        <span class="trade-badge badge-setup">${t.setup}</span>
+        <span class="trade-badge badge-emotion">${t.emotion}</span>
+        <span class="trade-badge ${t.system === 'YES' ? 'badge-system-yes' : 'badge-system-no'}">
+          ${t.system === 'YES' ? '✅ System' : t.system === 'PARTIAL' ? '⚠️ Partial' : '❌ No System'}
+        </span>
+      </div>
+      ${t.notes ? `<div style="margin-top:6px;font-size:11px;color:var(--muted);line-height:1.4;">${t.notes}</div>` : ''}
+    </div>
+  `).join('');
+
+  const totalEl = document.getElementById('day-total');
+  totalEl.textContent = (dayPnl >= 0 ? '+$' : '-$') + Math.abs(dayPnl).toFixed(2);
+  totalEl.className = 'stat-value ' + (dayPnl >= 0 ? 'pos' : 'neg');
+}
+
+// ═══════════════════════════════════════════════════════
+// STATS
+// ═══════════════════════════════════════════════════════
+function updateStats() {
+  const trades = loadTrades();
+  const now = new Date();
+  const thisYear = now.getFullYear();
+  const thisMonth = now.getMonth();
+
+  const monthTrades = trades.filter(t => {
+    const d = new Date(t.date + 'T00:00:00');
+    return d.getFullYear() === thisYear && d.getMonth() === thisMonth;
+  });
+
+  const yearTrades = trades.filter(t => {
+    const d = new Date(t.date + 'T00:00:00');
+    return d.getFullYear() === thisYear;
+  });
+
+  const monthPnl = monthTrades.reduce((s, t) => s + (t.pnl || 0), 0);
+  const yearPnl = yearTrades.reduce((s, t) => s + (t.pnl || 0), 0);
+  const ytdPnl = yearPnl;
+
+  const completedTrades = trades.filter(t => t.result !== 'OPEN');
+  const wins = completedTrades.filter(t => t.result === 'WIN').length;
+  const winRate = completedTrades.length > 0
+    ? ((wins / completedTrades.length) * 100).toFixed(1) + '%'
+    : '—';
+
+  const systemYes = trades.filter(t => t.system === 'YES').length;
+  const systemRate = trades.length > 0
+    ? ((systemYes / trades.length) * 100).toFixed(0) + '%'
+    : '—';
+
+  setStatVal('stat-month', monthPnl);
+  setStatVal('stat-year', yearPnl);
+  setStatVal('stat-ytd', ytdPnl);
+
+  const wrEl = document.getElementById('stat-winrate');
+  wrEl.textContent = winRate;
+  wrEl.className = 'stat-value ' + (wins / completedTrades.length >= 0.5 ? 'pos' : 'neg');
+  if (completedTrades.length === 0) wrEl.className = 'stat-value neutral';
+
+  document.getElementById('stat-trades').textContent = trades.length;
+
+  const sysEl = document.getElementById('stat-system');
+  sysEl.textContent = systemRate;
+  sysEl.className = 'stat-value ' + (systemYes / trades.length >= 0.7 ? 'pos' : 'neg');
+  if (trades.length === 0) sysEl.className = 'stat-value neutral';
+}
+
+function setStatVal(id, pnl) {
+  const el = document.getElementById(id);
+  el.textContent = (pnl >= 0 ? '+$' : '-$') + Math.abs(pnl).toFixed(2);
+  el.className = 'stat-value ' + (pnl > 0 ? 'pos' : pnl < 0 ? 'neg' : 'neutral');
+}
+
+// ═══════════════════════════════════════════════════════
+// WEEKLY SUMMARY
+// ═══════════════════════════════════════════════════════
+function renderWeeklySummary() {
+  const trades = loadTrades();
+  const container = document.getElementById('weekly-summary');
+
+  // Get weeks of current month
+  const weeks = getWeeksOfMonth(currentYear, currentMonth);
+  const tradesByDate = {};
+  trades.forEach(t => {
+    if (!tradesByDate[t.date]) tradesByDate[t.date] = [];
+    tradesByDate[t.date].push(t);
+  });
+
+  if (weeks.every(w => w.dates.every(d => !tradesByDate[d]))) {
+    container.innerHTML = '<div class="empty-state">No trades this month yet</div>';
+    return;
+  }
+
+  container.innerHTML = weeks.map((week, idx) => {
+    let weekPnl = 0;
+    let weekTrades = 0;
+    week.dates.forEach(d => {
+      if (tradesByDate[d]) {
+        tradesByDate[d].forEach(t => { weekPnl += (t.pnl || 0); weekTrades++; });
+      }
+    });
+
+    if (weekTrades === 0) return '';
+
+    return `
+      <div style="display:flex;justify-content:space-between;align-items:center;
+                  padding:10px 12px;background:var(--surface2);border-radius:6px;
+                  border:1px solid var(--border);">
+        <div>
+          <div style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);
+                      letter-spacing:1px;margin-bottom:2px;">WEEK ${idx + 1}</div>
+          <div style="font-size:12px;color:var(--text);">${weekTrades} trade${weekTrades !== 1 ? 's' : ''}</div>
+        </div>
+        <div style="font-family:'Orbitron',monospace;font-size:16px;font-weight:700;
+                    color:${weekPnl >= 0 ? 'var(--green)' : 'var(--red)'};">
+          ${weekPnl >= 0 ? '+$' : '-$'}${Math.abs(weekPnl).toFixed(2)}
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function getWeeksOfMonth(year, month) {
+  const weeks = [];
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  let week = { dates: [] };
+
+  for (let i = 0; i < firstDay; i++) week.dates.push(null);
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    week.dates.push(formatDate(new Date(year, month, d)));
+    if (week.dates.length === 7) {
+      weeks.push(week);
+      week = { dates: [] };
+    }
+  }
+  if (week.dates.length > 0) weeks.push(week);
+  return weeks;
+}
+
+// ═══════════════════════════════════════════════════════
+// REMINDERS
+// ═══════════════════════════════════════════════════════
+function renderReminders() {
+  const reminders = loadReminders().sort((a, b) => a.date.localeCompare(b.date));
+  const list = document.getElementById('reminder-list');
+
+  if (reminders.length === 0) {
+    list.innerHTML = '<div class="empty-state">No reminders yet</div>';
+    return;
+  }
+
+  const today = formatDate(new Date());
+  list.innerHTML = reminders.map(r => {
+    const isPast = r.date < today;
+    const d = new Date(r.date + 'T00:00:00');
+    const label = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    return `
+      <div class="reminder-item" style="${isPast ? 'opacity:.5;' : ''}">
+        <div class="reminder-dot"></div>
+        <div style="flex:1;">
+          <div class="reminder-date">${label}</div>
+          <div class="reminder-text">${r.text}</div>
+        </div>
+        <button class="reminder-del" onclick="deleteReminder('${r.id}')">✕</button>
+      </div>
+    `;
+  }).join('');
+}
+
+function deleteReminder(id) {
+  const reminders = loadReminders().filter(r => r.id !== id);
+  saveReminders(reminders);
+  renderCalendar();
+}
+
+// ═══════════════════════════════════════════════════════
+// MODALS
+// ═══════════════════════════════════════════════════════
+function openTradeModal(dateStr) {
+  editingTradeId = null;
+  document.getElementById('f-ticker').value = '';
+  document.getElementById('f-date').value = dateStr || formatDate(new Date());
+  document.getElementById('f-type').value = 'BUY';
+  document.getElementById('f-setup').value = 'Farming';
+  document.getElementById('f-entry').value = '';
+  document.getElementById('f-exit').value = '';
+  document.getElementById('f-stop').value = '';
+  document.getElementById('f-shares').value = '';
+  document.getElementById('f-result').value = 'WIN';
+  document.getElementById('f-system').value = 'YES';
+  document.getElementById('f-emotion').value = 'Confident';
+  document.getElementById('f-notes').value = '';
+  document.getElementById('f-pnl-display').textContent = '—';
+  document.getElementById('f-pnl-display').style.color = 'var(--muted)';
+  document.getElementById('trade-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeTradeModal() {
+  document.getElementById('trade-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function editTrade(id) {
+  const trades = loadTrades();
+  const t = trades.find(t => t.id === id);
+  if (!t) return;
+  editingTradeId = id;
+  document.getElementById('f-ticker').value = t.ticker;
+  document.getElementById('f-date').value = t.date;
+  document.getElementById('f-type').value = t.type;
+  document.getElementById('f-setup').value = t.setup;
+  document.getElementById('f-entry').value = t.entry;
+  document.getElementById('f-exit').value = t.exit || '';
+  document.getElementById('f-stop').value = t.stop || '';
+  document.getElementById('f-shares').value = t.shares;
+  document.getElementById('f-result').value = t.result;
+  document.getElementById('f-system').value = t.system;
+  document.getElementById('f-emotion').value = t.emotion;
+  document.getElementById('f-notes').value = t.notes || '';
+  calcPnl();
+  document.getElementById('trade-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function openReminderModal() {
+  document.getElementById('r-date').value = selectedDate || formatDate(new Date());
+  document.getElementById('r-text').value = '';
+  document.getElementById('reminder-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeReminderModal() {
+  document.getElementById('reminder-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(el => {
+  el.addEventListener('click', e => {
+    if (e.target === el) {
+      el.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  });
+});
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(el => {
+      el.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  }
+});
+
+// ═══════════════════════════════════════════════════════
+// SAVE TRADE
+// ═══════════════════════════════════════════════════════
+function calcPnl() {
+  const entry = parseFloat(document.getElementById('f-entry').value);
+  const exit = parseFloat(document.getElementById('f-exit').value);
+  const shares = parseFloat(document.getElementById('f-shares').value);
+  const type = document.getElementById('f-type').value;
+  const display = document.getElementById('f-pnl-display');
+
+  if (!isNaN(entry) && !isNaN(exit) && !isNaN(shares) && shares > 0) {
+    let pnl;
+    if (type === 'SHORT') {
+      pnl = (entry - exit) * shares;
+    } else {
+      pnl = (exit - entry) * shares;
+    }
+    display.textContent = (pnl >= 0 ? '+$' : '-$') + Math.abs(pnl).toFixed(2);
+    display.style.color = pnl >= 0 ? 'var(--green)' : 'var(--red)';
+  } else {
+    display.textContent = '—';
+    display.style.color = 'var(--muted)';
+  }
+}
+
+function saveTrade() {
+  const ticker = document.getElementById('f-ticker').value.toUpperCase().trim();
+  const date = document.getElementById('f-date').value;
+  const entry = parseFloat(document.getElementById('f-entry').value);
+  const shares = parseFloat(document.getElementById('f-shares').value);
+
+  if (!ticker || !date || isNaN(entry) || isNaN(shares)) {
+    alert('Please fill in Ticker, Date, Entry Price and Shares at minimum.');
+    return;
+  }
+
+  const exit = parseFloat(document.getElementById('f-exit').value);
+  const type = document.getElementById('f-type').value;
+  let pnl = 0;
+  if (!isNaN(exit)) {
+    pnl = type === 'SHORT' ? (entry - exit) * shares : (exit - entry) * shares;
+  }
+
+  const trade = {
+    id: editingTradeId || Date.now().toString(),
+    ticker,
+    date,
+    type,
+    setup: document.getElementById('f-setup').value,
+    entry,
+    exit: isNaN(exit) ? null : exit,
+    stop: parseFloat(document.getElementById('f-stop').value) || null,
+    shares,
+    pnl: parseFloat(pnl.toFixed(2)),
+    result: document.getElementById('f-result').value,
+    system: document.getElementById('f-system').value,
+    emotion: document.getElementById('f-emotion').value,
+    notes: document.getElementById('f-notes').value.trim(),
+  };
+
+  let trades = loadTrades();
+  if (editingTradeId) {
+    trades = trades.map(t => t.id === editingTradeId ? trade : t);
+  } else {
+    trades.push(trade);
+  }
+  saveTrades(trades);
+  closeTradeModal();
+
+  // Navigate to trade date
+  const d = new Date(date + 'T00:00:00');
+  currentYear = d.getFullYear();
+  currentMonth = d.getMonth();
+  selectedDate = date;
+  renderCalendar();
+}
+
+function saveReminder() {
+  const date = document.getElementById('r-date').value;
+  const text = document.getElementById('r-text').value.trim();
+  if (!date || !text) { alert('Please enter a date and reminder text.'); return; }
+
+  const reminders = loadReminders();
+  reminders.push({ id: Date.now().toString(), date, text });
+  saveReminders(reminders);
+  closeReminderModal();
+  renderCalendar();
+}
+
+// ═══════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════
+function formatDate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+renderCalendar();
+</script>
+</body>
+</html>

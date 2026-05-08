@@ -791,7 +791,7 @@ body.banner-open .hero{padding-top:128px;}
         <div style="font-family:'Poppins',sans-serif;font-size:22px;font-weight:700;color:var(--cyan);margin-bottom:12px;">Shop the Alpha Breakout Lab Collection 🛒</div>
         <div style="font-family:'Rajdhani',sans-serif;font-size:18px;color:rgba(255,255,255,.6);margin-bottom:24px;">Premium quality · Trading inspired · Rep the movement</div>
         <div class="merch-price">From $21.99</div>
-        <a href="#" class="btn-primary" style="display:inline-block;font-size:16px;padding:12px 32px;">Shop Now</a>
+        <a href="https://www.etsy.com/shop/AlphabreakoutlabShop?ref=profile_header" target="_blank" class="btn-primary" style="display:inline-block;font-size:16px;padding:12px 32px;">Shop Now</a>
       </div>
       <div class="slogans-list">
         <div style="font-family:'Orbitron',monospace;font-size:14px;letter-spacing:4px;color:var(--gold);margin-bottom:16px;">AVAILABLE NOW</div>
@@ -1070,8 +1070,26 @@ function calcPositionSize(){const account=parseFloat(document.getElementById('ps
 function calcRiskReward(){const entry=parseFloat(document.getElementById('rr-entry').value),stop=parseFloat(document.getElementById('rr-stop').value),target=parseFloat(document.getElementById('rr-target').value),shares=parseFloat(document.getElementById('rr-shares').value)||1;if([entry,stop,target].some(isNaN)||entry<=0){alert('Please fill in entry, stop loss, and target.');return;}if(stop>=entry){alert('Stop loss must be below your entry price.');return;}if(target<=entry){alert('Profit target must be above your entry price.');return;}const risk=entry-stop,reward=target-entry,ratio=reward/risk,profit=reward*shares,loss=risk*shares,upside=(reward/entry*100),breakeven=(1/(1+ratio)*100);document.getElementById('rr-ratio').textContent=ratio.toFixed(2)+':1';document.getElementById('rr-profit').textContent='+$'+profit.toFixed(2);document.getElementById('rr-loss').textContent='-$'+loss.toFixed(2);document.getElementById('rr-upside').textContent='+'+upside.toFixed(1)+'%';document.getElementById('rr-breakeven').textContent=breakeven.toFixed(1)+'%';const verdict=document.getElementById('rr-verdict');if(ratio>=3){verdict.className='result-verdict verdict-good';verdict.textContent='🔥 EXCELLENT SETUP — '+ratio.toFixed(1)+':1 R:R. This is a high-conviction trade.';}else if(ratio>=2){verdict.className='result-verdict verdict-good';verdict.textContent='✅ GOOD SETUP — '+ratio.toFixed(1)+':1 R:R. ABL minimum for a trade.';}else if(ratio>=1){verdict.className='result-verdict verdict-ok';verdict.textContent='⚠️ MARGINAL — '+ratio.toFixed(1)+':1 R:R. Look for a better entry or wider target.';}else{verdict.className='result-verdict verdict-bad';verdict.textContent="🚨 SKIP THIS TRADE — R:R is below 1:1. The math doesn't work.";}document.getElementById('rr-results').classList.add('show');}
 
 function handleSubSubmit(e){setTimeout(()=>{document.getElementById('sub-success').style.display='block';e.target.querySelector('.sub-btn').style.display='none';},800);}
-function closeBanner(dismissed){const bar=document.getElementById('announce-bar');bar.style.transition='transform .3s ease, opacity .3s ease';bar.style.transform='translateY(-100%)';bar.style.opacity='0';document.body.classList.remove('banner-open');setTimeout(()=>{bar.style.display='none';},300);}
+function closeBanner(dismissed){
+  const bar=document.getElementById('announce-bar');
+  bar.style.transition='transform .3s ease, opacity .3s ease';
+  bar.style.transform='translateY(-100%)';
+  bar.style.opacity='0';
+  document.body.classList.remove('banner-open');
+  setTimeout(()=>{
+    bar.style.display='none';
+    document.querySelector('nav').style.top='0';
+    document.querySelector('.hero').style.paddingTop='80px';
+  },300);
+}
 document.addEventListener('DOMContentLoaded',()=>{document.body.classList.add('banner-open');});
 
 const tickers=[{sym:'AAPL',price:'189.42',chg:'+1.23%',up:true},{sym:'TSLA',price:'248.75',chg:'+3.59%',up:true},{sym:'NVDA',price:'875.20',chg:'+1.44%',up:true},{sym:'SPY',price:'512.88',chg:'+0.81%',up:true},{sym:'AMZN',price:'185.20',chg:'-0.77%',up:false},{sym:'META',price:'502.13',chg:'+2.01%',up:true},{sym:'QQQ',price:'445.92',chg:'+1.29%',up:true},{sym:'AMD',price:'168.30',chg:'+4.16%',up:true},{sym:'MSFT',price:'415.60',chg:'+0.78%',up:true},{sym:'GOOGL',price:'156.40',chg:'-0.56%',up:false}];
 const track=document.getElementById('tickerTrack');
+track.innerHTML=[...tickers,...tickers].map(t=>`<span class="tick-item"><span class="tick-sym">${t.sym}</span><span>${t.price}</span><span class="${t.up?'tick-up':'tick-dn'}">${t.chg} ${t.up?'▲':'▼'}</span></span><span class="tick-sep">|</span>`).join('');
+
+const observer=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity='1';e.target.style.transform='translateY(0)';}});},{threshold:0.1});
+document.querySelectorAll('.series-card,.social-card,.slogan-item').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(20px)';el.style.transition='opacity .6s ease, transform .6s ease';observer.observe(el);});
+</script>
+</body>
+</html>

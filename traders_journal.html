@@ -820,6 +820,7 @@ header {
         </div>
       </div>
       <button class="submit-btn" onclick="saveTrade()">SAVE TRADE</button>
+      <button class="submit-btn" id="delete-trade-btn" onclick="deleteTrade()" style="display:none;margin-top:10px;border-color:var(--red);color:var(--red);background:rgba(255,68,102,.1);">DELETE TRADE</button>
     </div>
   </div>
 </div>
@@ -1280,6 +1281,7 @@ function deleteReminder(id) {
 // ═══════════════════════════════════════════════════════
 function openTradeModal(dateStr) {
   editingTradeId = null;
+  document.getElementById('delete-trade-btn').style.display = 'none';
   document.getElementById('f-ticker').value = '';
   document.getElementById('f-date').value = dateStr || formatDate(new Date());
   document.getElementById('f-type').value = 'BUY';
@@ -1320,8 +1322,7 @@ function editTrade(id) {
   document.getElementById('f-system').value = t.system;
   document.getElementById('f-emotion').value = t.emotion;
   document.getElementById('f-notes').value = t.notes || '';
-  calcPnl();
-  document.getElementById('trade-modal').classList.add('open');
+  document.getElementById('delete-trade-btn').style.display = 'block';
   document.body.style.overflow = 'hidden';
 }
 
@@ -1359,7 +1360,15 @@ document.addEventListener('keydown', e => {
 // ═══════════════════════════════════════════════════════
 // SAVE TRADE
 // ═══════════════════════════════════════════════════════
-function calcPnl() {
+function deleteTrade() {
+  if (!editingTradeId) return;
+  if (!confirm('Are you sure you want to delete this trade?')) return;
+  let trades = loadTrades().filter(t => t.id !== editingTradeId);
+  saveTrades(trades);
+  closeTradeModal();
+  renderCalendar();
+  if (selectedDate) renderDayDetail(selectedDate);
+}
   const entry = parseFloat(document.getElementById('f-entry').value);
   const exit = parseFloat(document.getElementById('f-exit').value);
   const shares = parseFloat(document.getElementById('f-shares').value);

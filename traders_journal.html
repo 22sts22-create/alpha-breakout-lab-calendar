@@ -1165,11 +1165,17 @@ function updateStats() {
     : '—';
 
   setStatVal('stat-month', monthPnl);
-  // Also update calendar header month total
+
+  // Update calendar header with P&L for the month currently being VIEWED
+  const viewedMonthTrades = trades.filter(t => {
+    const d = new Date(t.date + 'T00:00:00');
+    return d.getFullYear() === currentYear && d.getMonth() === currentMonth;
+  });
+  const viewedMonthPnl = viewedMonthTrades.reduce((s, t) => s + (t.pnl || 0), 0);
   const calMonthEl = document.getElementById('cal-month-total');
   if (calMonthEl) {
-    calMonthEl.textContent = (monthPnl >= 0 ? '+$' : '-$') + Math.abs(monthPnl).toFixed(2);
-    calMonthEl.className = 'stat-value ' + (monthPnl > 0 ? 'pos' : monthPnl < 0 ? 'neg' : 'neutral');
+    calMonthEl.textContent = (viewedMonthPnl >= 0 ? '+$' : '-$') + Math.abs(viewedMonthPnl).toFixed(2);
+    calMonthEl.className = 'stat-value ' + (viewedMonthPnl > 0 ? 'pos' : viewedMonthPnl < 0 ? 'neg' : 'neutral');
   }
   setStatVal('stat-year', yearPnl);
   setStatVal('stat-ytd', ytdPnl);
@@ -1344,6 +1350,8 @@ function editTrade(id) {
   document.getElementById('f-emotion').value = t.emotion;
   document.getElementById('f-notes').value = t.notes || '';
   document.getElementById('delete-trade-btn').style.display = 'block';
+  calcPnl();
+  document.getElementById('trade-modal').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 

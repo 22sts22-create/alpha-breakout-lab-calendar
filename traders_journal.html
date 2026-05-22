@@ -660,7 +660,21 @@ header {
         <div class="cal-month" id="cal-month-label">May 2026</div>
         <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
       </div>
-      <button class="btn btn-cyan" onclick="goToday()">Today</button>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:2px;">
+        <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;">Month P&L</div>
+        <div class="stat-value neutral" id="cal-month-total" style="font-size:18px;">$0.00</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <select id="week-filter" onchange="filterWeek(this.value)" style="background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:6px 10px;font-family:'Rajdhani',sans-serif;font-size:13px;font-weight:700;letter-spacing:1px;cursor:pointer;outline:none;">
+          <option value="all">All Weeks</option>
+          <option value="1">Week 1</option>
+          <option value="2">Week 2</option>
+          <option value="3">Week 3</option>
+          <option value="4">Week 4</option>
+          <option value="5">Week 5</option>
+        </select>
+        <button class="btn btn-cyan" onclick="goToday()">Today</button>
+      </div>
     </div>
 
     <div class="cal-days-header">
@@ -890,7 +904,7 @@ let editingTradeId = null;
 const MONTHS = ['January','February','March','April','May','June',
                 'July','August','September','October','November','December'];
 
-function renderCalendar() {
+function renderCalendar(weekFilter) {
   const trades = loadTrades();
   const reminders = loadReminders();
   const today = new Date();
@@ -1052,7 +1066,8 @@ function renderCalendar() {
 
 function selectDay(dateStr, dayNum, isOther) {
   selectedDate = dateStr;
-  renderCalendar();
+  const weekFilterVal = document.getElementById('week-filter') ? document.getElementById('week-filter').value : 'all';
+  renderCalendar(weekFilterVal === 'all' ? null : parseInt(weekFilterVal));
   renderDayDetail(dateStr);
 
   // Update detail date label
@@ -1150,6 +1165,12 @@ function updateStats() {
     : '—';
 
   setStatVal('stat-month', monthPnl);
+  // Also update calendar header month total
+  const calMonthEl = document.getElementById('cal-month-total');
+  if (calMonthEl) {
+    calMonthEl.textContent = (monthPnl >= 0 ? '+$' : '-$') + Math.abs(monthPnl).toFixed(2);
+    calMonthEl.className = 'stat-value ' + (monthPnl > 0 ? 'pos' : monthPnl < 0 ? 'neg' : 'neutral');
+  }
   setStatVal('stat-year', yearPnl);
   setStatVal('stat-ytd', ytdPnl);
 
@@ -1459,6 +1480,11 @@ function saveReminder() {
 // ═══════════════════════════════════════════════════════
 // UTILS
 // ═══════════════════════════════════════════════════════
+function filterWeek(weekNum) {
+  // Re-render calendar with week filter
+  renderCalendar(weekNum === 'all' ? null : parseInt(weekNum));
+}
+
 function formatDate(d) {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, '0');

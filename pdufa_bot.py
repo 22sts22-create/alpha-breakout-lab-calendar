@@ -73,26 +73,26 @@ MONTH_MAP = {
 }
 
 
-def fetch_filing_text(accession, doc_id):
+def fetch_filing_text(cik, accession, doc_id):
     """Fetch the primary document text for an EDGAR filing.
 
+    The Archives path REQUIRES the filer CIK (leading zeros stripped):
+        https://www.sec.gov/Archives/edgar/data/<CIK_int>/<acc_nodash>/<filename>
+    cik:       from _source.ciks[0] (e.g. "0001114036")
     accession: "0001234567-25-000123"
-    doc_id:    "0001234567-25-000123:primary-doc.htm"  (the part after ':' is the file)
-    Builds the Archives URL and returns plain text (tags stripped), or "".
+    doc_id:    "0001234567-25-000123:primary-doc.htm"
+    Returns plain text (tags stripped), or "".
     """
     try:
-        acc_nodash = accession.replace("-", "")
         filename = doc_id.split(":", 1)[1] if ":" in doc_id else ""
-        # CIK isn't in _id, but EDGAR resolves the folder via the accession path
-        # using the filer's zero-stripped CIK. The Archives full-text doc lives at:
-        #   https://www.sec.gov/Archives/edgar/data/<CIK>/<acc_nodash>/<filename>
-        # We don't have CIK here, so use the accession-indexed path which redirects.
-        url = f"https://www.sec.gov/Archives/edgar/data/{acc_nodash}/{filename}" if filename else ""
-        if not url:
+        if not (cik and accession and filename):
             return ""
+        cik_int = str(int(cik))               # strip leading zeros
+        acc_nodash = accession.replace("-", "")
+        url = f"https://www.sec.gov/Archives/edgar/data/{cik_int}/{acc_nodash}/{filename}"
         resp = requests.get(url, headers=SEC_HEADERS, timeout=15)
         if resp.status_code != 200:
-            log.warning(f"Filing fetch {resp.status_code} for {accession}")
+            log.warning(f"Filing fetch {resp.status_code} for {accession} ({url})")
             return ""
         text = BeautifulSoup(resp.content, "html.parser").get_text(" ", strip=True)
         time.sleep(0.15)
@@ -177,6 +177,14 @@ def search_sec_edgar():
                 # accession id: "0001234567-25-000123:primary.htm"
                 accession = hit.get("_id", "").split(":")[0]
 
+                # CIK is needed to build the Archives URL. It's in _source.ciks
+                # (list of zero-padded strings). Fall back to display_names' CIK.
+                ciks = source.get("ciks", [])
+                cik = ciks[0] if ciks else ""
+                if not cik:
+                    m = re.search(r"CIK\s*0*(\d+)", display)
+                    cik = m.group(1) if m else ""
+
                 # Highlighted snippets are where the matched phrase lives.
                 highlights = hit.get("highlight", {})
                 snippet_bits = []
@@ -195,8 +203,8 @@ def search_sec_edgar():
                 # The highlight snippet is a short fragment and often does NOT
                 # contain the actual PDUFA date (it's in the filing body). If we
                 # didn't get a date, fetch the filing text and search that.
-                if not pdufa_date and accession:
-                    filing_text = fetch_filing_text(accession, hit.get("_id", ""))
+                if not pdufa_date and accession and cik:
+                    filing_text = fetch_filing_text(cik, accession, hit.get("_id", ""))
                     pdufa_date = extract_pdufa_date_from_filing(filing_text)
                     if filing_text and not snippet:
                         snippet = filing_text[:300]

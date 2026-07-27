@@ -73,6 +73,60 @@ MONTH_MAP = {
 }
 
 
+def fetch_filing_text(accession, doc_id):
+    """Fetch the primary document text for an EDGAR filing.
+
+    accession: "0001234567-25-000123"
+    doc_id:    "0001234567-25-000123:primary-doc.htm"  (the part after ':' is the file)
+    Builds the Archives URL and returns plain text (tags stripped), or "".
+    """
+    try:
+        acc_nodash = accession.replace("-", "")
+        filename = doc_id.split(":", 1)[1] if ":" in doc_id else ""
+        # CIK isn't in _id, but EDGAR resolves the folder via the accession path
+        # using the filer's zero-stripped CIK. The Archives full-text doc lives at:
+        #   https://www.sec.gov/Archives/edgar/data/<CIK>/<acc_nodash>/<filename>
+        # We don't have CIK here, so use the accession-indexed path which redirects.
+        url = f"https://www.sec.gov/Archives/edgar/data/{acc_nodash}/{filename}" if filename else ""
+        if not url:
+            return ""
+        resp = requests.get(url, headers=SEC_HEADERS, timeout=15)
+        if resp.status_code != 200:
+            log.warning(f"Filing fetch {resp.status_code} for {accession}")
+            return ""
+        text = BeautifulSoup(resp.content, "html.parser").get_text(" ", strip=True)
+        time.sleep(0.15)
+        return text
+    except Exception as e:
+        log.warning(f"Could not fetch filing {accession}: {e}")
+        return ""
+
+
+def extract_pdufa_date_from_filing(text):
+    """Find a date that appears NEAR PDUFA language, not just any date in the text.
+
+    A filing has many dates; we want the one tied to 'PDUFA date',
+    'target action date', 'goal date', etc. Search a window around those phrases.
+    """
+    if not text:
+        return None
+    cues = [
+        "pdufa date", "pdufa goal date", "target action date",
+        "goal date", "action date", "prescription drug user fee",
+    ]
+    low = text.lower()
+    for cue in cues:
+        idx = low.find(cue)
+        while idx != -1:
+            window = text[idx: idx + 160]  # look just after the cue phrase
+            date = extract_date_from_text(window)
+            if date:
+                return date
+            idx = low.find(cue, idx + 1)
+    # Fallback: any qualifying date anywhere in the doc.
+    return extract_date_from_text(text)
+
+
 def search_sec_edgar():
     """Search SEC EDGAR full-text search for recent PDUFA filings.
 
@@ -138,6 +192,15 @@ def search_sec_edgar():
 
                 pdufa_date = extract_date_from_text(snippet) or extract_date_from_text(display)
 
+                # The highlight snippet is a short fragment and often does NOT
+                # contain the actual PDUFA date (it's in the filing body). If we
+                # didn't get a date, fetch the filing text and search that.
+                if not pdufa_date and accession:
+                    filing_text = fetch_filing_text(accession, hit.get("_id", ""))
+                    pdufa_date = extract_pdufa_date_from_filing(filing_text)
+                    if filing_text and not snippet:
+                        snippet = filing_text[:300]
+
                 finding = {
                     "entity": entity,
                     "ticker": ticker,
@@ -167,7 +230,14 @@ def search_globenewswire():
     findings = []
     try:
         url = "https://www.globenewswire.com/RssFeed/subjectcode/15-Drug%20Approvals/industry/Biotechnology"
-        headers = {"User-Agent": "AlphaBreakoutLab pdufa-bot"}
+        # GlobeNewswire returns 400 for a bare bot UA — send a browser-like set.
+        headers = {
+            "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                           "AppleWebKit/537.36 (KHTML, like Gecko) "
+                           "Chrome/125.0 Safari/537.36"),
+            "Accept": "application/rss+xml, application/xml, text/xml; q=0.9, */*; q=0.8",
+            "Accept-Language": "en-US,en;q=0.9",
+        }
         resp = requests.get(url, headers=headers, timeout=15)
         if resp.status_code != 200:
             log.warning(f"GlobeNewswire returned status {resp.status_code}")
@@ -227,6 +297,8 @@ def extract_date_from_text(text):
     patterns = [
         r"(January|February|March|April|May|June|July|August|September|October|November|December)\s+(\d{1,2}),?\s+(202[5-9])",
         r"(Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\.?\s+(\d{1,2}),?\s+(202[5-9])",
+        # "5 December 2026" ordering (less common but appears in some PRs)
+        r"(\d{1,2})\s+(January|February|March|April|May|June|July|August|September|October|November|December)\s+(202[5-9])",
         r"(\d{1,2}/\d{1,2}/202[5-9])",
         r"(Q[1-4]\s+202[5-9])",
     ]

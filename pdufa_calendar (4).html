@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FDA PDUFA Catalyst Calendar 2026 | Alpha Breakout Lab</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080B14;
+    --surface: #0F1420;
+    --surface2: #161C2E;
+    --border: #1E2640;
+    --accent: #7C3AED;
+    --accent2: #06B6D4;
+    --gold: #F59E0B;
+    --green: #10B981;
+    --red: #EF4444;
+    --yellow: #F59E0B;
+    --text: #E2E8F0;
+    --muted: #64748B;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(124,58,237,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(124,58,237,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; z-index: 1; }
+
+  /* ── Header ── */
+  header {
+    padding: 48px 0 32px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    top: -60px; right: -100px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(124,58,237,0.15) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 4px;
+    color: var(--accent);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .brand::before {
+    content: '';
+    width: 24px; height: 2px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(36px, 6vw, 72px);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+
+  h1 span { color: var(--accent2); }
+
+  .subtitle {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 600px;
+    line-height: 1.6;
+  }
+
+  .meta-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+
+  .meta-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 4px;
+  }
+
+  .meta-badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* ── Disclaimer ── */
+  .disclaimer {
+    background: linear-gradient(135deg, rgba(245,158,11,0.08), rgba(245,158,11,0.03));
+    border: 1px solid rgba(245,158,11,0.25);
+    border-left: 3px solid var(--gold);
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin: 32px 0;
+    font-size: 12px;
+    color: #94A3B8;
+    line-height: 1.7;
+  }
+
+  .disclaimer strong {
+    color: var(--gold);
+    font-size: 11px;
+    letter-spacing: 2px;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* ── Stats row ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px;
+    margin: 32px 0;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .stat-card:hover { border-color: var(--accent); }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 42px;
+    line-height: 1;
+    color: var(--accent2);
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  /* ── Filters ── */
+  .filter-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .filter-label {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 6px 14px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-family: 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover, .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* ── Calendar Table ── */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 32px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+  }
+
+  thead th {
+    background: var(--surface2);
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(124,58,237,0.06); }
+  tbody tr.hidden { display: none; }
+
+  td {
+    padding: 16px;
+    font-size: 13px;
+    vertical-align: middle;
+  }
+
+  /* Month badge */
+  .month-badge {
+    display: inline-block;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+
+  /* Date */
+  .date-cell {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  .days-badge {
+    display: block;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  .days-badge.soon { color: var(--red); font-weight: 600; }
+  .days-badge.upcoming { color: var(--gold); }
+
+  /* Ticker */
+  .ticker {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    color: var(--accent2);
+  }
+
+  /* Company */
+  .company-name {
+    font-weight: 500;
+    color: var(--text);
+    font-size: 13px;
+  }
+
+  .drug-name {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    font-style: italic;
+  }
+
+  /* Indication */
+  .indication { color: var(--text); font-size: 12px; }
+
+  /* Cap */
+  .cap-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+
+  /* Risk */
+  .risk-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  .risk-VERY { background: rgba(239,68,68,0.15); color: #EF4444; border: 1px solid rgba(239,68,68,0.3); }
+  .risk-HIGH { background: rgba(245,158,11,0.15); color: #F59E0B; border: 1px solid rgba(245,158,11,0.3); }
+  .risk-MEDIUM { background: rgba(6,182,212,0.15); color: #06B6D4; border: 1px solid rgba(6,182,212,0.3); }
+  .risk-LOW { background: rgba(16,185,129,0.15); color: #10B981; border: 1px solid rgba(16,185,129,0.3); }
+
+  /* Notes */
+  .notes { font-size: 12px; color: #94A3B8; max-width: 320px; line-height: 1.5; }
+
+  /* ── Expand row ── */
+  .expand-row td {
+    padding: 0;
+    background: rgba(124,58,237,0.04);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .expand-content {
+    padding: 20px 24px;
+    display: none;
+  }
+
+  .expand-content.open { display: block; }
+
+  .expand-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .expand-item label {
+    display: block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .expand-item p {
+    font-size: 13px;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  /* ── Section divider ── */
+  .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 32px 0 16px;
+  }
+
+  .section-divider span {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: var(--muted);
+  }
+
+  .section-divider::before, .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── How it works ── */
+  .how-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin: 24px 0 40px;
+  }
+
+  .how-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+  }
+
+  .how-icon { font-size: 24px; margin-bottom: 10px; }
+
+  .how-card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 6px;
+  }
+
+  .how-card p { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  /* ── Footer ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    margin-top: 48px;
+  }
+
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-brand {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 3px;
+    color: var(--accent);
+  }
+
+  .footer-disc {
+    font-size: 11px;
+    color: var(--muted);
+    max-width: 600px;
+    line-height: 1.6;
+    text-align: right;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 640px) {
+    .footer-inner { flex-direction: column; align-items: flex-start; }
+    .footer-disc { text-align: left; }
+  }
+
+  /* ── Glossary ── */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin: 24px 0 48px;
+  }
+
+  .glossary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    transition: border-color 0.2s;
+  }
+
+  .glossary-card:hover { border-color: var(--accent); }
+
+  .glossary-acronym {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 2px;
+    color: var(--accent2);
+    margin-bottom: 2px;
+  }
+
+  .glossary-full {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .glossary-def {
+    font-size: 12px;
+    color: #94A3B8;
+    line-height: 1.6;
+  }
+
+  .glossary-tag {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 3px;
+    margin-top: 8px;
+  }
+
+  .tag-good    { background: rgba(16,185,129,0.15); color: #10B981; }
+  .tag-bad     { background: rgba(239,68,68,0.15);  color: #EF4444; }
+  .tag-neutral { background: rgba(6,182,212,0.15);  color: #06B6D4; }
+
+  /* ── Animations ── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeUp 0.5s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  tbody tr { animation: fadeUp 0.3s ease forwards; opacity: 0; }
+  tbody tr:nth-child(1) { animation-delay: 0.05s; }
+  tbody tr:nth-child(2) { animation-delay: 0.1s; }
+  tbody tr:nth-child(3) { animation-delay: 0.15s; }
+  tbody tr:nth-child(4) { animation-delay: 0.2s; }
+  tbody tr:nth-child(5) { animation-delay: 0.25s; }
+  tbody tr:nth-child(6) { animation-delay: 0.3s; }
+  tbody tr:nth-child(7) { animation-delay: 0.35s; }
+  tbody tr:nth-child(8) { animation-delay: 0.4s; }
+  tbody tr:nth-child(9) { animation-delay: 0.45s; }
+  tbody tr:nth-child(10) { animation-delay: 0.5s; }
+  tbody tr:nth-child(11) { animation-delay: 0.55s; }
+  tbody tr:nth-child(12) { animation-delay: 0.6s; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════ HEADER ══════════════════════════════════ -->
+<header>
+  <div class="container">
+    <div class="brand">Alpha Breakout Lab</div>
+    <h1>FDA PDUFA <span>Catalyst</span><br>Calendar 2026</h1>
+    <p class="subtitle">Track upcoming FDA drug approval dates, binary events, and biotech catalysts. Updated from public SEC filings and company press releases.</p>
+    <div class="meta-row">
+      <div class="meta-badge"><span class="dot"></span> Updated July 27, 2026</div>
+      <div class="meta-badge">9 Tracked Events</div>
+      <div class="meta-badge">Sources: SEC EDGAR · GlobeNewswire</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- ══════════════════════════════ DISCLAIMER ══════════════════════════════ -->
+  <div class="disclaimer fade-in">
+    <strong>⚠️ IMPORTANT DISCLAIMER — READ BEFORE USING THIS CALENDAR</strong>
+    This calendar is provided for <strong>informational and educational purposes only</strong> and does not constitute investment advice, financial advice, or a recommendation to buy or sell any security. PDUFA dates are sourced from publicly available SEC filings, company press releases, and GlobeNewswire announcements and are subject to change without notice. The FDA may act before, on, or after stated PDUFA dates, and may issue approvals, Complete Response Letters (CRLs), or extensions. Alpha Breakout Lab makes no guarantee of accuracy or completeness. <strong>Always conduct your own due diligence and consult a licensed financial advisor before making any investment decisions.</strong> Investing in biotech and pharmaceutical stocks involves substantial risk, including the possible loss of your entire investment.
+  </div>
+
+  <!-- ══════════════════════════════ STATS ══════════════════════════════ -->
+  <div class="stats-row fade-in">
+    <div class="stat-card">
+      <div class="stat-num">9</div>
+      <div class="stat-label">Tracked Events</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">~67%</div>
+      <div class="stat-label">Historical FDA Approval Rate</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">61</div>
+      <div class="stat-label">Days to Next PDUFA</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">5</div>
+      <div class="stat-label">High Risk Events</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════ FILTERS ══════════════════════════════ -->
+  <div class="filter-row">
+    <span class="filter-label">Filter:</span>
+    <button class="filter-btn active" onclick="filterTable('all', this)">All Events</button>
+    <button class="filter-btn" onclick="filterTable('HIGH', this)">High Risk</button>
+    <button class="filter-btn" onclick="filterTable('MEDIUM', this)">Medium Risk</button>
+    <button class="filter-btn" onclick="filterTable('watchlist', this)">Watchlist</button>
+  </div>
+
+  <!-- ══════════════════════════════ TABLE ══════════════════════════════ -->
+  <div class="table-wrap">
+    <table id="pdufa-table">
+      <thead>
+        <tr>
+          <th>Month</th>
+          <th>PDUFA Date</th>
+          <th>Ticker</th>
+          <th>Company &amp; Drug</th>
+          <th>Indication</th>
+          <th>Cap Size</th>
+          <th>Risk</th>
+          <th>Key Notes</th>
+        </tr>
+      </thead>
+      <tbody id="table-body">
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════ HOW IT WORKS ══════════════════════════════ -->
+  <div class="section-divider"><span>How PDUFA Dates Work</span></div>
+  <div class="how-grid fade-in">
+    <div class="how-card">
+      <div class="how-icon">📋</div>
+      <h3>What Is a PDUFA Date?</h3>
+      <p>The FDA's target deadline to approve or reject a New Drug Application (NDA) or Biologics License Application (BLA). The FDA meets its target over 90% of the time.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-icon">📈</div>
+      <h3>Pre-PDUFA Run-Up</h3>
+      <p>Stocks often run 2–8 weeks before the date as traders position themselves. Rising volume is an early signal. The best entries are usually early, not late.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-icon">✅</div>
+      <h3>On Approval</h3>
+      <p>Expect 50–300%+ moves. Institutions flood in. Being positioned before the news is key — buying after often means chasing.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-icon">❌</div>
+      <h3>On Rejection (CRL)</h3>
+      <p>A Complete Response Letter means the FDA won't approve yet. Stocks can drop 40–80% in a single session. Risk management is critical.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-icon">👀</div>
+      <h3>Insider Signal</h3>
+      <p>Watch SEC Form 4 filings 30–60 days before a PDUFA date. Insiders buying their own stock ahead of an FDA decision signals confidence in the outcome.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-icon">🔄</div>
+      <h3>Dates Can Change</h3>
+      <p>FDA can grant 3-month extensions for manufacturing reviews or additional data. Always verify the current PDUFA date in the company's latest SEC filings before trading.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════ SOURCES ══════════════════════════════ -->
+  <div class="section-divider"><span>Live Calendar Sources</span></div>
+  <div class="how-grid fade-in" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); margin-bottom: 48px;">
+    <div class="how-card" style="text-align:center;">
+      <div class="how-icon">🌐</div>
+      <h3>MarketBeat</h3>
+      <p style="font-size:11px;">marketbeat.com/fda-calendar</p>
+    </div>
+    <div class="how-card" style="text-align:center;">
+      <div class="how-icon">🌐</div>
+      <h3>BioPharmaWatch</h3>
+      <p style="font-size:11px;">biopharmawatch.com/PDUFA-calendar</p>
+    </div>
+    <div class="how-card" style="text-align:center;">
+      <div class="how-icon">🌐</div>
+      <h3>SEC EDGAR</h3>
+      <p style="font-size:11px;">sec.gov/cgi-bin/browse-edgar</p>
+    </div>
+    <div class="how-card" style="text-align:center;">
+      <div class="how-icon">🌐</div>
+      <h3>BiopharmCatalyst</h3>
+      <p style="font-size:11px;">biopharmcatalyst.com/calendars</p>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══════════════════════════════ GLOSSARY ══════════════════════════════ -->
+<div class="container">
+  <div class="section-divider"><span>FDA & Biotech Glossary — Key Terms for New Traders</span></div>
+  <div class="glossary-grid fade-in">
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">PDUFA</div>
+      <div class="glossary-full">Prescription Drug User Fee Act</div>
+      <div class="glossary-def">The law that sets deadlines for the FDA to review drug applications. The "PDUFA date" is the target date the FDA must decide to approve or reject a drug. This is the most important date for biotech traders.</div>
+      <span class="glossary-tag tag-neutral">Key Catalyst</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">NDA</div>
+      <div class="glossary-full">New Drug Application</div>
+      <div class="glossary-def">A formal request submitted by a company to the FDA asking for permission to sell a new drug in the U.S. Small molecule drugs (pills, tablets, capsules) go through the NDA process.</div>
+      <span class="glossary-tag tag-neutral">Filing Type</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">BLA</div>
+      <div class="glossary-full">Biologics License Application</div>
+      <div class="glossary-def">Similar to an NDA but for biological products — things like gene therapies, vaccines, cell therapies, and protein-based drugs. BLAs are common in cutting-edge biotech.</div>
+      <span class="glossary-tag tag-neutral">Filing Type</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">CRL</div>
+      <div class="glossary-full">Complete Response Letter</div>
+      <div class="glossary-def">The FDA's way of saying "not yet." A CRL means the FDA won't approve the drug in its current form and lists what needs to be fixed. Stocks typically crash 40–80% on a CRL. NOT a permanent rejection — companies can resubmit.</div>
+      <span class="glossary-tag tag-bad">Bearish Signal</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">sNDA / sBLA</div>
+      <div class="glossary-full">Supplemental NDA / Supplemental BLA</div>
+      <div class="glossary-def">When a drug is already approved but the company wants to add a new use, dosage, or patient group. Less risky than a first-time approval because the drug's safety is already established.</div>
+      <span class="glossary-tag tag-neutral">Lower Risk Filing</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">FDA</div>
+      <div class="glossary-full">Food and Drug Administration</div>
+      <div class="glossary-def">The U.S. government agency that reviews and approves drugs before they can be sold to the public. Their decision on a drug can make or break a biotech stock overnight.</div>
+      <span class="glossary-tag tag-neutral">Regulator</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">AdCom</div>
+      <div class="glossary-full">Advisory Committee Meeting</div>
+      <div class="glossary-def">A panel of independent medical experts that the FDA sometimes consults before making a drug decision. The committee votes publicly — a positive vote usually sends stocks up even before the official PDUFA date.</div>
+      <span class="glossary-tag tag-neutral">Pre-Decision Signal</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">Priority Review</div>
+      <div class="glossary-full">Priority Review Designation</div>
+      <div class="glossary-def">FDA fast-tracks reviews for drugs that treat serious conditions with no existing treatments. Review time is cut from 10 months to 6 months. A Priority Review designation is a bullish signal — it means the FDA thinks the drug is important.</div>
+      <span class="glossary-tag tag-good">Bullish Signal</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">Breakthrough</div>
+      <div class="glossary-full">Breakthrough Therapy Designation</div>
+      <div class="glossary-def">The FDA's highest level of support. Granted when early clinical evidence shows a drug may offer a major improvement over existing treatments. Companies with this designation get extra FDA guidance and faster reviews.</div>
+      <span class="glossary-tag tag-good">Very Bullish</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">Orphan Drug</div>
+      <div class="glossary-full">Orphan Drug Designation</div>
+      <div class="glossary-def">Designation for drugs treating rare diseases affecting fewer than 200,000 people in the U.S. Companies get tax credits, 7 years of market exclusivity, and faster FDA review. Big profit potential with less competition.</div>
+      <span class="glossary-tag tag-good">Bullish Signal</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">Phase 1/2/3</div>
+      <div class="glossary-full">Clinical Trial Phases</div>
+      <div class="glossary-def">The 3 stages of human drug testing before FDA submission. <strong style="color:#E2E8F0;">Phase 1</strong> = safety in small group. <strong style="color:#E2E8F0;">Phase 2</strong> = effectiveness + dosing. <strong style="color:#E2E8F0;">Phase 3</strong> = large-scale pivotal trial. Positive Phase 3 data = NDA/BLA filing = PDUFA date.</div>
+      <span class="glossary-tag tag-neutral">Trial Stages</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">Market Exclusivity</div>
+      <div class="glossary-full">Market Exclusivity Period</div>
+      <div class="glossary-def">A period where no generic drug can compete with an approved drug. Standard is 5 years for new drugs, 12 years for biologics, 7 years for orphan drugs. Longer exclusivity = more profit potential for the company.</div>
+      <span class="glossary-tag tag-good">Moat Signal</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">280E</div>
+      <div class="glossary-full">IRS Tax Code Section 280E</div>
+      <div class="glossary-def">A tax rule that prevents cannabis companies from deducting normal business expenses because marijuana is still federally illegal. This crushes profitability. Rescheduling marijuana would eliminate 280E — instantly making cannabis companies far more profitable.</div>
+      <span class="glossary-tag tag-bad">Cannabis Burden</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">REIT</div>
+      <div class="glossary-full">Real Estate Investment Trust</div>
+      <div class="glossary-def">A company that owns income-producing real estate and is required to pay at least 90% of taxable income as dividends. IIPR is a cannabis REIT — it owns grow facilities and leases them back to cannabis companies, collecting rent like a landlord.</div>
+      <span class="glossary-tag tag-neutral">Company Type</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">MSO</div>
+      <div class="glossary-full">Multi-State Operator</div>
+      <div class="glossary-def">A cannabis company that operates dispensaries, cultivation, and processing across multiple U.S. states. MSOs are the big players in U.S. cannabis — companies like Trulieve, Green Thumb, and Curaleaf. Most trade on OTC markets due to federal restrictions.</div>
+      <span class="glossary-tag tag-neutral">Cannabis Term</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">Form 4</div>
+      <div class="glossary-full">Statement of Changes in Beneficial Ownership</div>
+      <div class="glossary-def">An SEC filing that insiders (executives, directors, 10%+ shareholders) must submit within 2 business days of buying or selling company stock. Insider BUYING = bullish signal. Multiple Form 4 buys before a PDUFA date = insiders are confident. Watch these closely!</div>
+      <span class="glossary-tag tag-good">Key Insider Signal</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">Form 3</div>
+      <div class="glossary-full">Initial Statement of Beneficial Ownership</div>
+      <div class="glossary-def">The first filing a new insider must submit within 10 days of becoming an officer, director, or 10%+ shareholder. Multiple Form 3s filed at the same time signals a leadership change or new major investors entering a company.</div>
+      <span class="glossary-tag tag-neutral">Insider Filing</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">Short Interest</div>
+      <div class="glossary-full">Short Interest / Short Float %</div>
+      <div class="glossary-def">The percentage of a stock's shares currently being "shorted" — bet against by traders expecting the price to fall. High short interest (above 20%) + positive news = potential short squeeze, where shorts are forced to buy shares to cover losses, sending the price flying.</div>
+      <span class="glossary-tag tag-neutral">Squeeze Setup</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">Float</div>
+      <div class="glossary-full">Public Float</div>
+      <div class="glossary-def">The number of shares actually available for public trading. A LOW float means fewer shares available — so when buyers come in, the price moves fast and big. Low float + catalyst = explosive moves in both directions.</div>
+      <span class="glossary-tag tag-neutral">Volatility Factor</span>
+    </div>
+
+    <div class="glossary-card">
+      <div class="glossary-acronym">OTC</div>
+      <div class="glossary-full">Over The Counter</div>
+      <div class="glossary-def">Stocks that trade directly between buyers and sellers rather than on a major exchange like NYSE or NASDAQ. Most U.S. cannabis companies trade OTC because federal illegality bars them from major exchanges. OTC stocks have less regulation and less liquidity.</div>
+      <span class="glossary-tag tag-neutral">Market Type</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════ FOOTER ══════════════════════════════ -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">Alpha Breakout Lab</div>
+      <div class="footer-disc">
+        This page is for informational purposes only and does not constitute investment advice. PDUFA dates are subject to change. Past FDA approval rates do not guarantee future results. Alpha Breakout Lab is not a registered investment advisor. Always do your own research. Not financial advice.
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  EDIT THIS DATA SECTION TO UPDATE THE CALENDAR
+//  Add new rows, update dates, change notes — just edit below
+// ════════════════════════════════════════════════════════════
+const PDUFA_DATA = [
+  {
+    month: "MAY",
+    monthColor: "#7C3AED",
+    date: "May 31, 2026",
+    isoDate: "2026-05-31",
+    ticker: "CING",
+    company: "Cingulate Inc.",
+    drug: "CTx-1301 (dexmethylphenidate HCl)",
+    indication: "ADHD — Once-Daily Extended Release",
+    cap: "Micro Cap",
+    risk: "HIGH",
+    notes: "NDA accepted Oct 2025. Needs ~$7M capital raise before PDUFA date. Watch for dilution risk.",
+    type: "standard"
+  },
+  {
+    month: "JUNE",
+    monthColor: "#0891B2",
+    date: "Jun 27, 2026",
+    isoDate: "2026-06-27",
+    ticker: "UNCY",
+    company: "Unicycive Therapeutics",
+    drug: "Oxylanthanum Carbonate (OLC)",
+    indication: "Hyperphosphatemia in Dialysis Patients",
+    cap: "Small Cap",
+    risk: "HIGH",
+    notes: "Class II resubmission. Cash runway into 2027. 3 analysts Strong Buy. PT avg $16–34. Prior CRL resolved.",
+    type: "standard"
+  },
+  {
+    month: "JUNE",
+    monthColor: "#0891B2",
+    date: "Jun 29, 2026",
+    isoDate: "2026-06-29",
+    ticker: "LNTH",
+    company: "Lantheus Holdings",
+    drug: "LNTH-2501 (Ga-68 edotreotide)",
+    indication: "SSTR+ Neuroendocrine Tumors (PET Imaging)",
+    cap: "Mid Cap",
+    risk: "MEDIUM",
+    notes: "3-month extension granted Mar 2026 for manufacturing review. Strong existing commercial revenue reduces binary risk.",
+    type: "standard"
+  },
+  {
+    month: "JULY",
+    monthColor: "#059669",
+    date: "Jul 7, 2026",
+    isoDate: "2026-07-07",
+    ticker: "VERA",
+    company: "Vera Therapeutics",
+    drug: "Atacicept",
+    indication: "IgA Nephropathy (Rare Kidney Disease)",
+    cap: "Small Cap",
+    risk: "HIGH",
+    notes: "Priority Review granted Jan 2026. First-in-class dual BAFF/APRIL inhibitor. Rare disease = fast track advantage.",
+    type: "standard"
+  },
+  {
+    month: "AUGUST",
+    monthColor: "#D97706",
+    date: "Aug 22, 2026",
+    isoDate: "2026-08-22",
+    ticker: "CAPR",
+    company: "Capricor Therapeutics",
+    drug: "Deramiocel",
+    indication: "Duchenne Muscular Dystrophy",
+    cap: "Small Cap",
+    risk: "HIGH",
+    notes: "Class 2 resubmission after Jul 2025 CRL. Cell therapy. Rare pediatric disease. Watch for Rare Pediatric Disease Priority Review voucher.",
+    type: "standard"
+  },
+  {
+    month: "Q3 2026",
+    monthColor: "#475569",
+    date: "Q3 2026 (TBD)",
+    isoDate: "2026-09-01",
+    ticker: "RARE",
+    company: "Ultragenyx Pharmaceutical",
+    drug: "UX111",
+    indication: "Sanfilippo Syndrome Type A (Ultra-Rare)",
+    cap: "Mid Cap",
+    risk: "HIGH",
+    notes: "Would be FIRST approved therapy for this disease. Priority Review. BLA resubmission date pending.",
+    type: "standard"
+  },
+  {
+    month: "SEPTEMBER",
+    monthColor: "#BE185D",
+    date: "Sep 18, 2026",
+    isoDate: "2026-09-18",
+    ticker: "NUVL",
+    company: "Nuvalent Inc.",
+    drug: "Zidesamtinib",
+    indication: "ROS1+ Non-Small Cell Lung Cancer",
+    cap: "Small Cap",
+    risk: "MEDIUM",
+    notes: "NDA accepted. Pre-NDA meeting aligned with FDA. Cancer indication. Strong clinical data from pivotal trial.",
+    type: "standard"
+  },
+  {
+    month: "WATCHLIST",
+    monthColor: "#B45309",
+    date: "Pivotal Data TBD",
+    isoDate: "2026-12-01",
+    ticker: "TSHA",
+    company: "Taysha Gene Therapies",
+    drug: "TSHA-102",
+    indication: "Rett Syndrome (CNS / Gene Therapy)",
+    cap: "Small Cap",
+    risk: "VERY HIGH",
+    notes: "REVEAL pivotal trial ongoing. No BLA filed yet — watching for data readout. 14 analysts Strong Buy. PT avg $11, high $19.",
+    type: "watchlist"
+  },
+  {
+    month: "WATCHLIST",
+    monthColor: "#B45309",
+    date: "Earnings May 7, 2026",
+    isoDate: "2026-05-07",
+    ticker: "ORGO",
+    company: "Organogenesis Holdings",
+    drug: "PuraPly / Apligraf",
+    indication: "Advanced Wound Care (CMS Reimbursement)",
+    cap: "Small Cap",
+    risk: "MEDIUM",
+    notes: "Not a PDUFA play — CMS reimbursement is the catalyst. PuraPly study hit primary endpoint Apr 6. 33% insider ownership. PT $9.",
+    type: "watchlist"
+  },
+  {
+    month: "MAY",
+    monthColor: "#7C3AED",
+    date: "May 8, 2027",
+    isoDate: "2027-05-08",
+    ticker: "BBIO",
+    company: "BridgeBio Pharma, Inc.",
+    drug: "See filing for details",
+    indication: "See filing for details",
+    cap: "Unknown",
+    risk: "HIGH",
+    notes: "Auto-detected from SEC EDGAR 8-K. Verify details in SEC filing. EX-99.1 5 ef20078442_ex99-1.htm EXHIBIT 99.1 Exhibit 99.1 BridgeBio Announces FDA Acceptance of NDA for Encaleret for ADH1 - PDUFA target action date of May 8, 2027 - If approved, encaleret will be th",
+    type: "standard"
+  }
+];
+
+// ════════════════════════════════════════════════════════════
+//  TABLE RENDERING — no need to edit below this line
+// ════════════════════════════════════════════════════════════
+
+function daysUntil(isoDate) {
+  const today = new Date();
+  const target = new Date(isoDate);
+  const diff = Math.ceil((target - today) / (1000 * 60 * 60 * 24));
+  return diff;
+}
+
+function daysLabel(days, date) {
+  if (date.includes("TBD") || date.includes("Earnings")) return "";
+  if (days < 0) return `<span class="days-badge">${Math.abs(days)}d ago</span>`;
+  if (days <= 14) return `<span class="days-badge soon">⚡ ${days} days away</span>`;
+  if (days <= 60) return `<span class="days-badge upcoming">🔔 ${days} days away</span>`;
+  return `<span class="days-badge">${days} days away</span>`;
+}
+
+function capBadgeStyle(cap) {
+  const styles = {
+    "Micro Cap": "background:rgba(239,68,68,0.1);color:#EF4444;border:1px solid rgba(239,68,68,0.2);",
+    "Small Cap": "background:rgba(245,158,11,0.1);color:#F59E0B;border:1px solid rgba(245,158,11,0.2);",
+    "Mid Cap":   "background:rgba(16,185,129,0.1);color:#10B981;border:1px solid rgba(16,185,129,0.2);",
+    "Large Cap": "background:rgba(6,182,212,0.1);color:#06B6D4;border:1px solid rgba(6,182,212,0.2);"
+  };
+  return styles[cap] || "";
+}
+
+function renderTable(data) {
+  const tbody = document.getElementById("table-body");
+  tbody.innerHTML = "";
+  data.forEach((row, i) => {
+    const days = daysUntil(row.isoDate);
+    const riskClass = "risk-" + (row.risk === "VERY HIGH" ? "VERY" : row.risk);
+
+    const tr = document.createElement("tr");
+    tr.dataset.risk = row.risk;
+    tr.dataset.type = row.type;
+    tr.onclick = () => toggleExpand(i);
+    tr.innerHTML = `
+      <td><span class="month-badge" style="background:${row.monthColor}22;color:${row.monthColor};border:1px solid ${row.monthColor}44;">${row.month}</span></td>
+      <td><span class="date-cell">${row.date}</span>${daysLabel(days, row.date)}</td>
+      <td><span class="ticker">${row.ticker}</span></td>
+      <td>
+        <div class="company-name">${row.company}</div>
+        <div class="drug-name">${row.drug}</div>
+      </td>
+      <td><span class="indication">${row.indication}</span></td>
+      <td><span class="cap-badge" style="${capBadgeStyle(row.cap)}">${row.cap}</span></td>
+      <td><span class="risk-badge ${riskClass}">${row.risk}</span></td>
+      <td><span class="notes">${row.notes}</span></td>
+    `;
+
+    const expandTr = document.createElement("tr");
+    expandTr.className = "expand-row";
+    expandTr.innerHTML = `
+      <td colspan="8">
+        <div class="expand-content" id="expand-${i}">
+          <div class="expand-grid">
+            <div class="expand-item"><label>Ticker</label><p>${row.ticker} — ${row.company}</p></div>
+            <div class="expand-item"><label>Drug / Therapy</label><p>${row.drug}</p></div>
+            <div class="expand-item"><label>Indication</label><p>${row.indication}</p></div>
+            <div class="expand-item"><label>PDUFA Date</label><p>${row.date}</p></div>
+            <div class="expand-item"><label>Market Cap Category</label><p>${row.cap}</p></div>
+            <div class="expand-item"><label>Risk Assessment</label><p>${row.risk}</p></div>
+            <div class="expand-item" style="grid-column: 1 / -1;"><label>Full Notes</label><p>${row.notes}</p></div>
+          </div>
+        </div>
+      </td>
+    `;
+
+    tbody.appendChild(tr);
+    tbody.appendChild(expandTr);
+  });
+}
+
+function toggleExpand(i) {
+  const el = document.getElementById("expand-" + i);
+  if (el) el.classList.toggle("open");
+}
+
+function filterTable(type, btn) {
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  btn.classList.add("active");
+
+  let filtered;
+  if (type === "all") filtered = PDUFA_DATA;
+  else if (type === "watchlist") filtered = PDUFA_DATA.filter(r => r.type === "watchlist");
+  else filtered = PDUFA_DATA.filter(r => r.risk === type || r.risk === "VERY HIGH" && type === "HIGH");
+
+  renderTable(filtered);
+}
+
+// Initial render
+renderTable(PDUFA_DATA);
+</script>
+</body>
+</html>
